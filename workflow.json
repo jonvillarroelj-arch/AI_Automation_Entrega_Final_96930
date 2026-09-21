@@ -1,0 +1,5158 @@
+{
+  "name": "Entrega Final: Verificación Automatizada de Pedidos Contra Entrega",
+  "nodes": [
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C2J1J0NUC",
+          "mode": "list",
+          "cachedResultName": "n8n-aiautomation"
+        },
+        "text": "=⚠️ Error técnico en el workflow\n\nNodo que falló: {{ $('Extraer Detalle del Error').item.json.nodo_fallido }}\nSistema afectado: {{ $('Extraer Detalle del Error').item.json.sistema_afectado }}\nCódigo HTTP: {{ $('Extraer Detalle del Error').item.json.codigo_http }}\nMensaje: {{ $('Extraer Detalle del Error').item.json.mensaje_error }}\nEjecución: {{ $execution.id }}\n\nReintentos agotados — se está registrando en Log Caídas y Errores y escalando a Revisión Humana.",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        8032,
+        -416
+      ],
+      "id": "04332aa4-3f50-42ea-8b85-0c2ff7efccfd",
+      "name": "Avisar por Slack (técnico)",
+      "webhookId": "869dc31a-a5e5-4840-bc61-93e8f7c66c54",
+      "retryOnFail": true,
+      "credentials": {
+        "slackApi": {
+          "id": "8BiC5s7ezzaU88S0",
+          "name": "Slack account 2"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "jon.villarroel.j@gmail.com",
+        "subject": "=⚠️ Falla en notificación de Slack - Revisar error técnico",
+        "message": "Se produjo un error técnico en el workflow Entrega Final: Verificación Automatizada de Pedidos Contra Entrega, y además el intento de notificarlo por Slack falló.\n\nEsto es un aviso de respaldo para que no se pierda el registro del error — Slack específicamente no pudo entregar el mensaje (puede ser un problema de token, de canal, o de conectividad).\n\nPor favor revisá manualmente las ejecuciones del workflow en n8n para identificar qué pedido y qué nodo generó el error original.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        8704,
+        -496
+      ],
+      "id": "e29d5199-20c7-4672-96a9-9793f137a07d",
+      "name": "Notificar falla Slack",
+      "webhookId": "a2dc3c28-5ebc-49e5-933b-803c74fd2e32",
+      "retryOnFail": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "sDAHmxlP0n80mpG5",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.query.decision }}",
+                    "rightValue": "aprobar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "4f6db7db-fdd7-49eb-b435-e6ce01aa8548"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Aprobar"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f25d9531-bfcc-4a04-ab6e-3a01795a944b",
+                    "leftValue": "={{ $json.query.decision }}",
+                    "rightValue": "rechazar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Rechazar"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        6336,
+        6464
+      ],
+      "id": "4ff69442-8063-4ed8-81a4-a46132c12d62",
+      "name": "¿Qué decidió?"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.property_telegram_chat_id || '8734954663' }}",
+        "text": "={{ $json.mensaje }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        7360,
+        208
+      ],
+      "id": "7e0ff7be-8d83-4cc0-bece-1bc1d973e2c8",
+      "name": "Confirmar Pedido",
+      "webhookId": "3f8f7225-7676-43bc-a5e9-4e156e6a9a20",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.property_telegram_chat_id || '8734954663' }}",
+        "text": "={{ $json.mensaje }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        7360,
+        -944
+      ],
+      "id": "f32dfa76-ef02-401c-bc16-b854efd516fe",
+      "name": "Cancelar Pedido",
+      "webhookId": "3f8f7225-7676-43bc-a5e9-4e156e6a9a20",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "jon.villarroel.j@gmail.com",
+        "subject": "=🔔 Revisión Humana Requerida - Pedido {{ $('Traer Datos Actuales HITL').item.json.property_comprador }}",
+        "message": "=<h2>Revisión Humana Requerida</h2>\n<p><strong>Comprador:</strong> {{ $('Traer Datos Actuales HITL').item.json.property_comprador }}</p>\n<p><strong>Producto:</strong> {{ $('Traer Datos Actuales HITL').item.json.property_producto }}</p>\n<p><strong>Dirección:</strong> {{ $('Traer Datos Actuales HITL').item.json.property_dirección }}</p>\n<p><strong>Motivo:</strong> Se requiere revisión manual — la dirección no pudo validarse automáticamente o la corrección del cliente no fue clara.</p>\n\n<p>\n  <a href=\"https://jons-macbook-pro.tailc0f6c8.ts.net/webhook/HITL-Decision?decision=aprobar&pedido_id={{ $json.id }}\" style=\"padding:10px 20px;background:#2ecc71;color:white;text-decoration:none;border-radius:5px;\">✅ Aprobar</a>\n  &nbsp;&nbsp;\n  <a href=\"https://jons-macbook-pro.tailc0f6c8.ts.net/webhook/HITL-Decision?decision=rechazar&pedido_id={{ $json.id }}\" style=\"padding:10px 20px;background:#e74c3c;color:white;text-decoration:none;border-radius:5px;\">❌ Rechazar</a>\n</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        8480,
+        -704
+      ],
+      "id": "57066239-812e-42ca-971f-1ccc70572d43",
+      "name": "HITL",
+      "webhookId": "d7a362ca-482f-480f-be1c-36b966b66a05",
+      "retryOnFail": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "sDAHmxlP0n80mpG5",
+          "name": "Gmail account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "path": "HITL-Decision",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        6048,
+        6560
+      ],
+      "id": "a9379e65-e690-43bf-b9be-20b9c533cdee",
+      "name": "Decisión HITL",
+      "webhookId": "b31a3aeb-507e-449b-95de-eec91aa768d8"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3d8f420e-9c5f-8090-aec7-000b6f7c04d9",
+          "mode": "list",
+          "cachedResultName": "Errores por Sistema",
+          "cachedResultUrl": "https://app.notion.com/p/3d8f420e9c5f80b68e02f3c80ff0301e"
+        },
+        "title": "={{ $execution.id }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Estado|select",
+              "selectValue": "🔴 Error"
+            },
+            {
+              "key": "Sistema Afectado|select",
+              "selectValue": "={{ $('Extraer Detalle del Error').item.json.sistema_afectado }}"
+            },
+            {
+              "key": "Nodo Fallido|rich_text",
+              "textContent": "={{ $('Extraer Detalle del Error').item.json.nodo_fallido }}"
+            },
+            {
+              "key": "Codigo HTTP|rich_text",
+              "textContent": "={{ $('Extraer Detalle del Error').item.json.codigo_http }}"
+            },
+            {
+              "key": "Fecha de Fallo|date",
+              "date": "={{ $now.toISO() }}",
+              "timezone": "Chile/Continental"
+            },
+            {
+              "key": "Mensaje de Error|rich_text",
+              "textContent": "={{ $('Extraer Detalle del Error').item.json.mensaje_error }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        8256,
+        -560
+      ],
+      "id": "dd3200e0-f5a5-42ff-994a-63de62bc89e2",
+      "name": "Registrar Log",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3d8f420e-9c5f-80d2-ad00-000b93799f89",
+          "mode": "list",
+          "cachedResultName": "Centro de Comando",
+          "cachedResultUrl": "https://app.notion.com/p/3d8f420e9c5f802d9911ebf981d35581"
+        }
+      },
+      "type": "n8n-nodes-base.notionTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -768,
+        -1024
+      ],
+      "id": "5e21392e-7340-4935-b979-1333306d3c03",
+      "name": "Pedido Nuevo Recibido",
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://addressvalidation.googleapis.com/v1:validateAddress",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"address\": {\n    \"addressLines\": [\"{{ $('Pedido Nuevo Recibido').item.json[\"Dirección\"] }}\"]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -96,
+        3424
+      ],
+      "id": "61a239d3-b854-4efd-bc28-3f1e7b0d9e76",
+      "name": "Validar Dirección",
+      "retryOnFail": true,
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "CngYBEpV8z84WoTt",
+          "name": "Google Address Validation API"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {
+          "includeUnpaired": true
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        128,
+        928
+      ],
+      "id": "fccb462f-f7c4-4329-845f-32eb5e617e37",
+      "name": "Combinar Dirección e Historial"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3d8f420e-9c5f-8006-bd2a-000b87e3e6a5",
+          "mode": "list",
+          "cachedResultName": "Historial de Compradores",
+          "cachedResultUrl": "https://app.notion.com/p/3d8f420e9c5f802fba77ead0c63c19b6"
+        },
+        "limit": 1,
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Teléfono|phone_number",
+              "condition": "equals",
+              "richTextValue": "={{ $('Pedido Nuevo Recibido').item.json[\"Teléfono\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        -96,
+        848
+      ],
+      "id": "0b14b5b1-ca53-424a-bd78-7d41c3c75249",
+      "name": "Consultar Historial Comprador",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Sos mi analista de riesgo de fraude para pedidos contra entrega (COD).\n2 salidas: CONTINUAR | CANCELAR\n\n\"Volumen suficiente\" significa 3 o más pedidos totales. Con 0, 1 o 2 pedidos totales, no hay volumen suficiente — siempre CONTINUAR, sin importar la tasa de esos pedidos.\n\nCONTINUAR: comprador nuevo, O volumen insuficiente (0 a 2 pedidos), O tasa >=60% con 3 o más pedidos\nCANCELAR: tasa <60% con 3 o más pedidos\nAnte la duda elegí CONTINUAR.\nLa validez de la dirección no cambia esta decisión (eso se resuelve después).\n\nDevolvé solo este JSON, sin texto adicional:\n{\"decision\":\"CONTINUAR\"|\"CANCELAR\",\"confianza\":\"ALTA\"|\"MEDIA\"|\"BAJA\",\"motivo\":\"...\"}\n\nDatos del pedido:\nNombre: {{ $json.property_nombre || 'Comprador nuevo' }}\nComprador nuevo: {{ $json.property_nombre ? 'No' : 'Sí' }}\nPedidos totales: {{ $json.property_pedidos_totales || 0 }}\nPedidos entregados: {{ $json.property_pedidos_entregados || 0 }}\nTasa de entrega: {{ $json.property_tasa_de_entrega || 'N/A' }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        352,
+        928
+      ],
+      "id": "97a36f0b-a53a-46d9-bc51-07ebb0c05206",
+      "name": "Evaluar Riesgo - Motor de Decisión",
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "p9KRrgU6vkEWueCB",
+          "name": "OpenAI account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.decision }}",
+                    "rightValue": "CONTINUAR",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "6f321ccb-120e-4cb7-97cc-b07e4fea8ad7"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Alta / Media"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "65d4a2fd-90a6-4dda-be22-48049e500550",
+                    "leftValue": "={{ $json.decision }}",
+                    "rightValue": "CANCELAR",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Baja"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        992
+      ],
+      "id": "797a7eab-f97f-42eb-86c7-a5082659c3bb",
+      "name": "¿Continuar o Cancelar?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b04b32a3-57ef-43ac-a450-54809d1bde1c",
+              "name": "mensaje",
+              "value": "=Hola {{ $('Pedido Nuevo Recibido').item.json.Comprador }}, gracias por comprar en Tienda Shop 📦\n\nQueremos entregarte tu pedido:\n✅ {{ $('Pedido Nuevo Recibido').item.json.Producto }}, por un valor de ${{ $('Pedido Nuevo Recibido').item.json.Precio.toLocaleString('es-CL') }}\n✅ Fecha: {{ $('Pedido Nuevo Recibido').item.json['Fecha ingreso'].start }}\n\nPor favor, confirma los datos de envío para que podamos proceder con la entrega:\n✅ Dirección: {{ $('Pedido Nuevo Recibido').item.json.Dirección }}\n\nSi los datos son correctos, por favor presiona el botón \"CONFIRMAR PEDIDO\" 👇\n\n🕐 Enviado el {{ $now.format('dd/MM/yyyy HH:mm') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1152,
+        464
+      ],
+      "id": "6d7b0e97-0971-4448-9e47-675694b9a466",
+      "name": "Armar Mensaje de Confirmación"
+    },
+    {
+      "parameters": {
+        "chatId": "=8734954663",
+        "text": "={{ $json.mensaje }}",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "CONFIRMAR PEDIDO",
+                    "additionalFields": {
+                      "callback_data": "=confirmar_{{ $('Pedido Nuevo Recibido').item.json.id }}"
+                    }
+                  },
+                  {
+                    "text": "Modificar dirección",
+                    "additionalFields": {
+                      "callback_data": "=modificar_{{ $('Pedido Nuevo Recibido').item.json.id }}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1376,
+        464
+      ],
+      "id": "5ee1b089-361f-4011-89fd-0779402af01f",
+      "name": "Enviar Confirmación",
+      "webhookId": "3f8f7225-7676-43bc-a5e9-4e156e6a9a20",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e2204737-8e3b-457b-9759-c65107ec7cf5",
+              "name": "mensaje",
+              "value": "=Hola {{ $('Pedido Nuevo Recibido').item.json.Comprador }}, lamentamos informarte que no podemos procesar tu pedido de {{ $('Pedido Nuevo Recibido').item.json.Producto }} en este momento.\n\nEsto se debe a que, según el historial de tus pedidos anteriores, algunos no llegaron a completarse con éxito. Por eso, por ahora no podemos ofrecerte la modalidad de pago contra entrega.\n\nSi crees que esto es un error, contactanos respondiendo este mensaje y lo revisamos.\n\n🕐 Enviado el {{ $now.format('dd/MM/yyyy HH:mm') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        7136,
+        2864
+      ],
+      "id": "df123e06-bca1-44ff-99f9-f5664da5c44a",
+      "name": "Armar Mensaje de Cancelación (Mal Historial)"
+    },
+    {
+      "parameters": {
+        "chatId": "8734954663",
+        "text": "={{ $json.mensaje }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        7360,
+        2864
+      ],
+      "id": "b9ec56ae-d854-46ec-ae5c-aacfcae65b75",
+      "name": "Notificar Cancelación (Mal Historial)",
+      "webhookId": "3f8f7225-7676-43bc-a5e9-4e156e6a9a20",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1824,
+        608
+      ],
+      "id": "d3e8bbbd-5b72-43bd-8ab0-f6abd36c409e",
+      "name": "Esperar 1h",
+      "webhookId": "e3843423-cb5d-407b-b8e9-13bd49f7a49d"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "get",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        2048,
+        608
+      ],
+      "id": "10d41995-0a2c-438e-9725-761e56b71c8c",
+      "name": "Traer Estado Actualizado (1h)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.property_estado }}",
+                    "rightValue": "Confirmó",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b09c6786-52cc-4f16-a220-3ddbaf6a5e6c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Confirmó"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3d16645c-c248-481c-8567-2dfd723bfebc",
+                    "leftValue": "={{ $json.property_estado }}",
+                    "rightValue": "Modificar Dirección",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Modificar Dirección"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        2272,
+        960
+      ],
+      "id": "0515303f-d2d5-47b7-a7b2-9d33a85f48a9",
+      "name": "¿Qué Respondió el Cliente? (1h)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "37c69acb-e5f4-4d4a-a2c7-3016dddb756d",
+              "leftValue": "={{ $json.property_dirección_validada }}",
+              "rightValue": "\"TRUE\"",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "7b65c986-910e-49de-8bc6-f2cdf7e6df97",
+              "leftValue": "={{ $json.result.verdict.addressComplete }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        6336,
+        48
+      ],
+      "id": "1e0fb0f7-7cc2-400f-b6b4-8b385fcdd1cd",
+      "name": "¿Dirección Válida?"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.property_estado }}",
+                    "rightValue": "Confirmó",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b09c6786-52cc-4f16-a220-3ddbaf6a5e6c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Confirmó"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3d16645c-c248-481c-8567-2dfd723bfebc",
+                    "leftValue": "={{ $json.property_estado }}",
+                    "rightValue": "Modificar Dirección",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Modificar Dirección"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        3616,
+        2384
+      ],
+      "id": "019ed76b-8c02-4cf6-a2e3-42cb2d60d216",
+      "name": "¿Qué Respondió el Cliente? (7h)"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.output[0].content[0].text;\nconst limpio = raw.replace(/```json|```/g, '').trim();\nconst parsed = JSON.parse(limpio);\n\nreturn [{\n  json: {\n    ...$json,\n    decision: parsed.decision,\n    confianza: parsed.confianza,\n    motivo: parsed.motivo\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        992
+      ],
+      "id": "33d72e66-8885-4aa1-8327-8fbcfa0d7fc6",
+      "name": "Interpretar Desición de Riesgo"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "callback_query",
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        4288,
+        4464
+      ],
+      "id": "2b8984df-f133-48e5-91f9-1ed42a62feba",
+      "name": "Botón Presionado",
+      "webhookId": "891ecd66-aa38-426d-b42e-6578c8b60d01",
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.item.json;\nlet estado = null, respuestaTexto = null, pedidoId = null, chatId = null;\n\nif (item.callback_query) {\n  const data = item.callback_query.data;\n  const [accion, id] = data.split('_');\n  pedidoId = id;\n  chatId = item.callback_query.message.chat.id;\n  estado = (accion === 'confirmar') ? 'Confirmó' : 'Modificar Dirección';\n} else if (item.message) {\n  respuestaTexto = item.message.text;\n  chatId = item.message.chat.id;\n  estado = 'Modificar Dirección';\n}\n\nreturn [{\n  json: { estado, respuesta_texto: respuestaTexto, pedido_id: pedidoId, chat_id: chatId, origen: pedidoId ? 'boton' : 'texto' }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4512,
+        4464
+      ],
+      "id": "639f8865-ef0d-4aa3-9f53-8fc9e92e4334",
+      "name": "Interpretar Evento Telegram"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3c1ddefb-706a-464f-a172-5e919058e261",
+              "leftValue": "={{ $json.origen }}",
+              "rightValue": "boton",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4736,
+        4464
+      ],
+      "id": "6c433697-f902-40b2-a265-ba70943e26dd",
+      "name": "¿Vino por Botón o Texto?"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3d8f420e-9c5f-80d2-ad00-000b93799f89",
+          "mode": "list",
+          "cachedResultName": "Centro de Comando",
+          "cachedResultUrl": "https://app.notion.com/p/3d8f420e9c5f802d9911ebf981d35581"
+        },
+        "limit": 1,
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Estado|select",
+              "condition": "equals",
+              "optionValue": "Modificar Dirección"
+            },
+            {
+              "key": "Telegram Chat ID|rich_text",
+              "condition": "equals",
+              "richTextValue": "={{ $json.chat_id.toString() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        4960,
+        4720
+      ],
+      "id": "4ea9ebc1-8810-4f6f-9179-1d5fcd7f318a",
+      "name": "Buscar Pedido por Chat ID",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "get",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.pedido_id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        6336,
+        3824
+      ],
+      "id": "db067f88-4bbf-4688-b8c7-5ca953f643e0",
+      "name": "Buscar Pedido por ID",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Buscar Pedido por Chat ID (Amplio)').isExecuted ? $('Buscar Pedido por Chat ID (Amplio)').item.json.id : $('Buscar Pedido por Chat ID').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Estado|select",
+              "selectValue": "={{ $('Interpretar Evento Telegram').item.json.estado }}"
+            },
+            {
+              "key": "=Dirección|rich_text",
+              "textContent": "={{ $('Interpretar Evento Telegram').item.json.respuesta_texto }}"
+            },
+            {
+              "key": "=Dirección Corregida Recibida|checkbox",
+              "checkboxValue": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        6848,
+        4352
+      ],
+      "id": "3c7b0840-bfeb-40f1-b423-24880732fb12",
+      "name": "Actualizar Pedido Texto",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8fae2639-f2fe-4ee3-b59a-ef68ac26f01a",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        5248,
+        4784
+      ],
+      "id": "0156f948-d860-4f62-b48d-36e5e06d33dc",
+      "name": "¿Se Encontró el Pedido?"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3d8f420e-9c5f-80d2-ad00-000b93799f89",
+          "mode": "list",
+          "cachedResultName": "Centro de Comando",
+          "cachedResultUrl": "https://app.notion.com/p/3d8f420e9c5f802d9911ebf981d35581"
+        },
+        "limit": 1,
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Telegram Chat ID|rich_text",
+              "condition": "equals",
+              "richTextValue": "={{ $('Interpretar Evento Telegram').item.json.chat_id.toString() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        5536,
+        4864
+      ],
+      "id": "b97e2923-94ff-43dd-9e5f-b1960ef2020b",
+      "name": "Buscar Pedido por Chat ID (Amplio)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5a3b3300-54d2-41f8-bca5-8c83217990ff",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        5760,
+        4928
+      ],
+      "id": "273f75a5-6c8f-44e6-ba7c-cb6bf307e3ef",
+      "name": "¿Se Encontró Pedido Amplio?"
+    },
+    {
+      "parameters": {
+        "sendTo": "jon.villarroel.j@gmail.com",
+        "subject": "Mensaje de Telegram sin pedido asociado",
+        "message": "=Se recibió un mensaje de Telegram que no coincide con ningún pedido, ni en estado \"Modificar Dirección\" ni en ningún otro.  Chat ID: {{ $('Interpretar Evento Telegram').item.json.chat_id }} Texto recibido: {{ $('Interpretar Evento Telegram').item.json.respuesta_texto }}  Es probable que sea la primera vez que este Chat ID interactúa con el bot. Revisar manualmente.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        7584,
+        5312
+      ],
+      "id": "70ccec74-a20d-4283-8d04-de24f323acc8",
+      "name": "Notificar Mensaje Sin Pedido Asociado",
+      "webhookId": "604c0df6-1163-4231-bc44-3fbcba37d0c5",
+      "retryOnFail": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "sDAHmxlP0n80mpG5",
+          "name": "Gmail account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Sos un clasificador de mensajes de clientes en un sistema de pedidos contra entrega (COD).\n\nEl cliente escribió este mensaje sin apretar ningún botón: \"{{ $('Interpretar Evento Telegram').item.json.respuesta_texto }}\"\n\nClasificalo en una de estas 3 categorías:\n- DIRECCION: si el mensaje contiene una dirección física clara (calle, número, comuna) que parece ser una corrección de dirección de envío\n- CONFIRMACION: si el mensaje expresa claramente que el cliente confirma o acepta el pedido tal como está (ej: \"sí\", \"confirmo\", \"dale\", \"está bien así\")\n- OTRO: cualquier otra cosa — preguntas, dudas, mensajes ambiguos, quejas, intención de cancelar, o cualquier texto que no sea claramente uno de los dos casos anteriores\n\nRespondé solo con este JSON, sin texto adicional:\n{\"intencion\": \"DIRECCION\" | \"CONFIRMACION\" | \"OTRO\", \"motivo\": \"breve explicación\"}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        5984,
+        4832
+      ],
+      "id": "6a7bd855-5441-4875-8357-f8db18983ba4",
+      "name": "Clasificar Intención del Mensaje",
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "p9KRrgU6vkEWueCB",
+          "name": "OpenAI account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.output[0].content[0].text;\nconst limpio = raw.replace(/```json|```/g, '').trim();\nconst parsed = JSON.parse(limpio);\n\nreturn [{\n  json: {\n    ...$json,\n    intencion: parsed.intencion,\n    motivo: parsed.motivo\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6336,
+        4928
+      ],
+      "id": "7f9c251a-f1aa-4caa-9ae9-0c5cf4ce8c55",
+      "name": "Interpretar Intención"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intencion }}",
+                    "rightValue": "DIRECCION",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0230e1ec-fa97-49a0-9a58-59ab944f9b50"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Dirección"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "48b232b9-1b88-470e-921d-6e9df3ccbc3b",
+                    "leftValue": "={{ $json.intencion }}",
+                    "rightValue": "CONFIRMACION",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Confirmación"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "7e411147-9b07-47af-8e4b-df677f76ed09",
+                    "leftValue": "={{ $json.intencion }}",
+                    "rightValue": "OTRO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Otro"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        7632,
+        -1280
+      ],
+      "id": "2f038443-9408-466b-8dc2-5d8089817547",
+      "name": "¿Cuál es la Intención?"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Buscar Pedido por Chat ID (Amplio)').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Estado|select",
+              "selectValue": "=Confirmó"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        6848,
+        4976
+      ],
+      "id": "9b7a3f5b-8e39-4170-9fed-c56d15fbb31f",
+      "name": "Actualizar Pedido (Confirmación Detectada)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e44c4921-f604-41c9-bb15-d9dc342cf86b",
+              "leftValue": "={{ $('Interpretar Evento Telegram').item.json.estado }}",
+              "rightValue": "Confirmó",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        6848,
+        3904
+      ],
+      "id": "5da546cc-ecab-474a-9f70-c87cbdb1da7f",
+      "name": "¿Confirmar o Modificar?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae4963df-2f6c-4952-aebf-a05278beb4cf",
+              "name": "mensaje",
+              "value": "=¡Gracias {{ $('Buscar Pedido por ID').item.json.property_comprador }}! Confirmamos tu pedido ✅\n\n📦 {{ $('Buscar Pedido por ID').item.json.property_producto }}\n💰 ${{ $('Buscar Pedido por ID').item.json.property_precio.toLocaleString('es-CL') }}\n📍 Dirección de entrega: {{ $('Buscar Pedido por ID').item.json.property_dirección }}\n🗓️ Fecha de confirmación: {{ $now.format('dd/MM/yyyy HH:mm') }}\n\nTu pedido estará listo para despacho en un plazo de 3 a 5 días hábiles. Apenas generemos la guía de envío, te la enviaremos por acá para que puedas hacer seguimiento de tu pedido.\n\n¡Gracias por tu compra! 🙌",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        7136,
+        3808
+      ],
+      "id": "878df88a-59d4-4f01-87a9-61f12f1ecf4a",
+      "name": "Armar Mensaje de Confirmación (Inmediato)"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Interpretar Evento Telegram').item.json.chat_id }}",
+        "text": "={{ $json.mensaje }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        7360,
+        3808
+      ],
+      "id": "13d478d0-63d8-4ec7-a6ac-1566393a65c5",
+      "name": "Enviar Confirmación Inmediata (Botón)",
+      "webhookId": "027cea13-b753-4980-a7d7-dc7d843ba117",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Buscar Pedido por ID').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Confirmación Enviada|checkbox",
+              "checkboxValue": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        7584,
+        3872
+      ],
+      "id": "f3e5abb0-1fb2-47ab-ae07-6e70868da4b0",
+      "name": "Marcar Confirmación Enviada (Botón)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae4963df-2f6c-4952-aebf-a05278beb4cf",
+              "name": "mensaje",
+              "value": "=¡Gracias {{ $('Buscar Pedido por Chat ID (Amplio)').item.json.property_comprador }}! Confirmamos tu pedido ✅\n\n📦 {{ $('Buscar Pedido por Chat ID (Amplio)').item.json.property_producto }}\n💰 ${{ $('Buscar Pedido por Chat ID (Amplio)').item.json.property_precio.toLocaleString('es-CL') }}\n📍 Dirección de entrega: {{ $('Buscar Pedido por Chat ID (Amplio)').item.json.property_dirección }}\n🗓️ Fecha de confirmación: {{ $now.format('dd/MM/yyyy HH:mm') }}\n\nTu pedido estará listo para despacho en un plazo de 3 a 5 días hábiles. Apenas generemos la guía de envío, te la enviaremos por acá para que puedas hacer seguimiento de tu pedido.\n\n¡Gracias por tu compra! 🙌",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        7136,
+        5056
+      ],
+      "id": "395c673c-99ce-40e3-886f-89e127f86034",
+      "name": "Armar Mensaje de Confirmación (Inmediato Texto)"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Interpretar Evento Telegram').item.json.chat_id }}",
+        "text": "={{ $json.mensaje }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        7360,
+        5056
+      ],
+      "id": "b6937427-cbde-473b-944a-441cc86997f0",
+      "name": "Enviar Confirmación Inmediata (Texto)",
+      "webhookId": "027cea13-b753-4980-a7d7-dc7d843ba117",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Buscar Pedido por Chat ID (Amplio)').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Confirmación Enviada|checkbox",
+              "checkboxValue": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        7584,
+        5120
+      ],
+      "id": "cec07d18-7136-4e56-9fe3-0733edc07223",
+      "name": "Marcar Confirmación Enviada (Texto)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Interpretar Evento Telegram').item.json.chat_id }}",
+        "text": "=¡Recibido! 📝Cuéntanos cuál es la dirección correcta para tu entrega y la validamos enseguida.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        7376,
+        4048
+      ],
+      "id": "d56b635e-005b-4b52-a441-78673473279d",
+      "name": "Enviar Ack Modificar Dirección",
+      "webhookId": "01be590f-0108-45a3-a9a7-20c5a706a106",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "41df942f-2254-4cbb-9b62-3773dda78d37",
+              "leftValue": "={{ $json.property_dirección_corregida_recibida }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2720,
+        1184
+      ],
+      "id": "de398941-5cc9-4380-9783-4b5a5ca1ac89",
+      "name": "¿Ya se Recibió la Dirección Corregida? (1h)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "747bd018-9430-4f60-bf8b-776b34636d9e",
+              "name": "mensaje",
+              "value": "=¡Hola de nuevo! 👋\n\nSeguimos esperando la dirección corregida de tu pedido. Recuerda que si no la recibimos dentro de las próximas 23 horas, el pedido se cancelará automáticamente.\n\nCuéntanos la dirección correcta cuando puedas 📍\n\n🕐 Enviado el {{ $now.format('dd/MM/yyyy HH:mm') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2944,
+        1264
+      ],
+      "id": "2118e5b2-70a0-4a1a-bdf4-b48163c6ca39",
+      "name": "Armar Recordatorio Dirección (1/2)"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3392,
+        1312
+      ],
+      "id": "c1f74132-366f-42f2-9e6a-1e12f8d8b2d1",
+      "name": "Esperar Dirección (hasta 7h)",
+      "webhookId": "a5f5fe66-9179-4860-b15c-a3d754f0ac0c"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "41df942f-2254-4cbb-9b62-3773dda78d37",
+              "leftValue": "={{ $json.property_dirección_corregida_recibida }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3840,
+        1376
+      ],
+      "id": "5f61dba9-8007-4598-87f8-1cfd5b960050",
+      "name": "¿Ya se Recibió la Dirección Corregida? (7h)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "747bd018-9430-4f60-bf8b-776b34636d9e",
+              "name": "mensaje",
+              "value": "=⏰ Último aviso\n\nTodavía no recibimos la dirección corregida de tu pedido. Si no nos escribes en las próximas 17 horas, el pedido se cancelará automáticamente.\n\nPor favor cuéntanos la dirección correcta lo antes posible 📍\n\n🕐 Enviado el {{ $now.format('dd/MM/yyyy HH:mm') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        4064,
+        1456
+      ],
+      "id": "1c4b2402-cc3a-4b8a-a455-1b56fd03d4c3",
+      "name": "Armar Recordatorio Dirección (2/2)"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Interpretar Evento Telegram').item.json.chat_id }}",
+        "text": "={{ $json.mensaje }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3168,
+        1264
+      ],
+      "id": "477609e6-5352-4cf8-9442-83256317e3f1",
+      "name": "Enviar Recordatorio Dirección (1/2)",
+      "webhookId": "5f9fdc65-37bb-42d6-aa68-343e690363f4",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Interpretar Evento Telegram').item.json.chat_id }}",
+        "text": "={{ $json.mensaje }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4288,
+        1456
+      ],
+      "id": "40a14bcb-4c40-4079-8a97-b78b927f9e54",
+      "name": "Enviar Recordatorio Dirección (2/2)",
+      "webhookId": "5f9fdc65-37bb-42d6-aa68-343e690363f4",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4512,
+        1520
+      ],
+      "id": "26c3807e-c42c-4c26-a880-405d6846af76",
+      "name": "Esperar Dirección (hasta 24h)",
+      "webhookId": "3b757a77-e8ac-4981-a4b3-59694be8e8e5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "41df942f-2254-4cbb-9b62-3773dda78d37",
+              "leftValue": "={{ $json.property_dirección_corregida_recibida }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4960,
+        1600
+      ],
+      "id": "245d89e1-398e-4c9a-9d4f-2417499d6b85",
+      "name": "¿Ya se Recibió la Dirección Corregida? (24h)"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.query && $json.query.pedido_id ? $json.query.pedido_id : $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Estado|select",
+              "selectValue": "=Confirmó"
+            },
+            {
+              "key": "=Dirección Validada|select",
+              "selectValue": "=TRUE"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        6560,
+        128
+      ],
+      "id": "19bc0b50-7a74-4731-bd50-83c758e5efd9",
+      "name": "Registrar Confirmación del Pedido",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "89499f52-8617-445f-a170-2e408ad722ac",
+              "leftValue": "={{ $json.property_confirmación_enviada }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        6848,
+        208
+      ],
+      "id": "9dca329c-39e4-4bd4-9ea8-d1ff2972f930",
+      "name": "¿Confirmación Ya Enviada?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "67e2e51e-6f9e-443d-8971-baec99f68f2e",
+              "name": "mensaje",
+              "value": "=¡Gracias {{ $json.property_comprador }}! Confirmamos tu pedido ✅\n\n📦 {{ $json.property_producto }}\n💰 ${{ $json.property_precio.toLocaleString('es-CL') }}\n📍 Dirección de entrega: {{ $json.property_dirección }}\n🗓️ Fecha de confirmación: {{ $now.format('dd/MM/yyyy HH:mm') }}\n\nTu pedido estará listo para despacho en un plazo de 3 a 5 días hábiles. Apenas generemos la guía de envío, te la enviaremos por acá para que puedas hacer seguimiento de tu pedido.\n\n¡Gracias por tu compra! 🙌",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        7136,
+        208
+      ],
+      "id": "d3beb89a-be6c-4c37-b127-445f5b293b78",
+      "name": "Armar Mensaje de Confirmación (Validación Dirección)"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Confirmación Enviada|checkbox",
+              "checkboxValue": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        7584,
+        272
+      ],
+      "id": "93740968-c87c-44d5-84e0-1e65f26a9457",
+      "name": "Marcar Confirmación Enviada (Validación Dirección)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.query && $json.query.pedido_id ? $json.query.pedido_id : $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Estado|select",
+              "selectValue": "={{ $json.estado_cancelacion || 'Cancelado' }}"
+            },
+            {
+              "key": "=Motivo Cancelación|rich_text",
+              "textContent": "={{ $json.motivo_cancelacion }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        6848,
+        -1024
+      ],
+      "id": "670b97f0-fdae-4464-9201-6aa8b5caea8b",
+      "name": "Registrar Cancelación del Pedido",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2dc4276b-be0b-44e0-8bb7-11a2fb2aae5d",
+              "name": "mensaje",
+              "value": "=Lamentamos informarte que tu pedido ha sido cancelado ❌\n\n📦 {{ $json.property_producto }}\n\n{{ $json.property_motivo_cancelación ? $json.property_motivo_cancelación : 'No pudimos confirmar los datos de tu pedido a tiempo.' }}\n\nSi crees que esto es un error, puedes contactarnos para más información.\n\n🕐 Enviado el {{ $now.format('dd/MM/yyyy HH:mm') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        7136,
+        -944
+      ],
+      "id": "ef8a60e8-f4f2-4f7b-9832-b218743b4002",
+      "name": "Armar Mensaje de Cancelación (Timeout/Rechazo)"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Sos un asistente que interpreta correcciones de dirección de clientes en un sistema de pedidos contra entrega (COD).\n\nDirección original del pedido: \"{{ $('Pedido Nuevo Recibido').isExecuted ? $('Pedido Nuevo Recibido').item.json.Dirección : $('Buscar Pedido por Chat ID').item.json.property_dirección }}\"\nTexto que envió el cliente como corrección: \"{{ $json.property_dirección }}\"\n\nClasificá la situación en una de estas 3 categorías:\n- CONFIRMADO: si el texto del cliente en realidad confirma que la dirección original está bien (no es una corrección real)\n- CORREGIDO: si el texto contiene una dirección física clara y completa (calle, número, comuna) que reemplaza a la original\n- NO_CLARO: si el texto es ambiguo, incompleto, o no se entiende bien cuál es la dirección correcta\n\nRespondé solo con este JSON, sin texto adicional:\n{\"resultado\": \"CONFIRMADO\" | \"CORREGIDO\" | \"NO_CLARO\", \"direccion_interpretada\": \"la dirección final a usar, o null si no aplica\", \"motivo\": \"breve explicación\"}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        5184,
+        592
+      ],
+      "id": "0e02f52d-3c8a-420b-92dd-4bddbfb794df",
+      "name": "Interpretar Corrección de Dirección",
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "p9KRrgU6vkEWueCB",
+          "name": "OpenAI account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.output[0].content[0].text;\nconst limpio = raw.replace(/```json|```/g, '').trim();\nconst parsed = JSON.parse(limpio);\n\nreturn [{\n  json: {\n    ...$json,\n    resultado: parsed.resultado,\n    direccion_interpretada: parsed.direccion_interpretada,\n    motivo: parsed.motivo\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5536,
+        672
+      ],
+      "id": "1be9b6a4-69f6-4a04-bd70-1e150214bf20",
+      "name": "Interpretar Corrección Detectada"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.resultado }}",
+                    "rightValue": "CONFIRMADO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a49442a6-9336-4187-8ee8-73410d704c09"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Confirmado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f3612251-6e1c-428f-873b-8cef531b51c9",
+                    "leftValue": "={{ $json.resultado }}",
+                    "rightValue": "CORREGIDO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Corregido"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d53ae7c4-fc17-49f9-8b36-cc0e2e1b8c19",
+                    "leftValue": "={{ $json.resultado }}",
+                    "rightValue": "NO_CLARO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "No Claro"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        6864,
+        -1456
+      ],
+      "id": "34686e7a-50fc-48d3-be3d-d2e3c75807d6",
+      "name": "¿Cómo Quedó la Dirección?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://addressvalidation.googleapis.com/v1:validateAddress",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"address\": {\n    \"addressLines\": [\"{{ $json.direccion_interpretada }}\"] \n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        6048,
+        784
+      ],
+      "id": "e7b2e630-c111-4ed4-a4e1-95b655163d58",
+      "name": "Revalidar Dirección Corregida",
+      "retryOnFail": true,
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "CngYBEpV8z84WoTt",
+          "name": "Google Address Validation API"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f530b9b9-a74c-4002-921e-e277fee62351",
+              "name": "mensaje",
+              "value": "=¡Hola {{ $('Pedido Nuevo Recibido').item.json.Comprador }}! 👋\n\nTodavía no recibimos tu confirmación para el pedido de {{ $('Pedido Nuevo Recibido').item.json.Producto }}.\n\nPor favor, confirma los datos de envío para que podamos proceder con la entrega:\n📍 Dirección: {{ $('Pedido Nuevo Recibido').item.json.Dirección }}\n\nRecuerda que si no respondes dentro de las próximas 23 horas, el pedido se cancelará automáticamente.\n\n🕐 Enviado el {{ $now.format('dd/MM/yyyy HH:mm') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2496,
+        2144
+      ],
+      "id": "4c1afc31-0d73-4b0b-a84f-086233fcb1aa",
+      "name": "Armar Recordatorio (1/2)"
+    },
+    {
+      "parameters": {
+        "chatId": "8734954663",
+        "text": "={{ $json.mensaje }}",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "\"CONFIRMAR PEDIDO\"",
+                    "additionalFields": {
+                      "callback_data": "=confirmar_{{ $('Pedido Nuevo Recibido').item.json.id }}"
+                    }
+                  },
+                  {
+                    "text": "Modificar dirección",
+                    "additionalFields": {
+                      "callback_data": "=modificar_{{ $('Pedido Nuevo Recibido').item.json.id }}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2720,
+        2144
+      ],
+      "id": "7150d192-7dab-48cb-a6d4-a460146e0b3f",
+      "name": "Enviar Recordatorio (1/2)",
+      "webhookId": "3f8f7225-7676-43bc-a5e9-4e156e6a9a20",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3168,
+        2304
+      ],
+      "id": "5dad8b48-d17d-4e39-b86b-86ef8d525454",
+      "name": "Esperar (hasta 7h)",
+      "webhookId": "e3843423-cb5d-407b-b8e9-13bd49f7a49d"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Recordatorio Enviado|checkbox"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        2944,
+        2240
+      ],
+      "id": "7d031475-bc92-48cc-863e-7c03e83273a2",
+      "name": "Marcar Recordatorio Enviado (1/2)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Recordatorio Enviado|checkbox",
+              "checkboxValue": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        5248,
+        2528
+      ],
+      "id": "49a97c47-06c0-46ad-89ea-88d5fcb77526",
+      "name": "Marcar Recordatorio Enviado (2/2)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "get",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        3616,
+        1312
+      ],
+      "id": "65508112-73e8-47e1-a105-32e112a7d6f6",
+      "name": "Traer Estado Actualizado D (7h)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "get",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        4736,
+        1520
+      ],
+      "id": "bca26b50-1be4-4e32-9b85-f3106ba9be48",
+      "name": "Traer Estado Actualizado D (24h)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "get",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        3392,
+        2304
+      ],
+      "id": "2e7e062d-7f06-4ba5-842e-81b04e727627",
+      "name": "Traer Estado Actualizado C (7h)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5e8656df-3cac-4305-8cdd-b3163c9e8b3f",
+              "name": "mensaje",
+              "value": "=⏰ Último aviso, {{ $('Pedido Nuevo Recibido').item.json.Comprador }}\n\nTodavía no recibimos tu confirmación para el pedido de {{ $('Pedido Nuevo Recibido').item.json.Producto }}.\n\nSi no respondes dentro de las próximas 17 horas, el pedido se cancelará automáticamente.\n\n📍 Dirección: {{ $('Pedido Nuevo Recibido').item.json.Dirección }}\n\n🕐 Enviado el {{ $now.format('dd/MM/yyyy HH:mm') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        4736,
+        2464
+      ],
+      "id": "9385d844-7e31-41fb-95f5-9d0fde184a02",
+      "name": "Armar Recordatorio (2/2)"
+    },
+    {
+      "parameters": {
+        "chatId": "8734954663",
+        "text": "={{ $json.mensaje }}",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "\"CONFIRMAR PEDIDO\"",
+                    "additionalFields": {
+                      "callback_data": "=confirmar_{{ $('Pedido Nuevo Recibido').item.json.id }}"
+                    }
+                  },
+                  {
+                    "text": "\"Modificar dirección\"",
+                    "additionalFields": {
+                      "callback_data": "=modificar_{{ $('Pedido Nuevo Recibido').item.json.id }}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4960,
+        2464
+      ],
+      "id": "e63846e6-1dd9-4e0e-9a21-62a3661905d9",
+      "name": "Enviar Recordatorio (2/2)",
+      "webhookId": "3f8f7225-7676-43bc-a5e9-4e156e6a9a20",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        5536,
+        2608
+      ],
+      "id": "edc90a83-7330-46d5-ab22-908bf9cf03cc",
+      "name": "Esperar Final (hasta 24h)",
+      "webhookId": "e3843423-cb5d-407b-b8e9-13bd49f7a49d"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "get",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        5760,
+        2608
+      ],
+      "id": "bb867c78-3d4e-4c53-a597-0d154bf3aecf",
+      "name": "Traer Estado Actualizado C (24h)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "bae4f455-6c6f-40aa-be0f-24a6ba3145a4",
+              "leftValue": "={{ $json.property_estado }}",
+              "rightValue": "Confirmó",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        6048,
+        2672
+      ],
+      "id": "18f0e880-bfef-42c9-88cc-8a006164feb0",
+      "name": "¿Confirmó o se Cancela? (Final)?"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 22
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        5536,
+        6016
+      ],
+      "id": "921dd240-b596-4622-8035-805fb2aaa7f4",
+      "name": "Cierre de Día Programado"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3d8f420e-9c5f-80d2-ad00-000b93799f89",
+          "mode": "list",
+          "cachedResultName": "Centro de Comando",
+          "cachedResultUrl": "https://app.notion.com/p/3d8f420e9c5f802d9911ebf981d35581"
+        },
+        "returnAll": true,
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Fecha ingreso|date",
+              "condition": "on_or_after",
+              "dateValue": "={{ $now.minus({ days: 7 }).startOf('day') }}"
+            },
+            {
+              "key": "Fecha ingreso|date",
+              "condition": "before",
+              "dateValue": "={{ $now.plus({ days: 1 }).startOf('day') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        5760,
+        6016
+      ],
+      "id": "4ee5658d-4ee9-4068-a709-c48bfa4be466",
+      "name": "Traer Pedidos del Día",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        7360,
+        5824
+      ],
+      "id": "13df1547-49df-4d7d-9ba3-430822b5ba4b",
+      "name": "Combinar KPI Negocio y Sistema"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3d8f420e-9c5f-8090-aec7-000b6f7c04d9",
+          "mode": "list",
+          "cachedResultName": "Log Caídas y Errores",
+          "cachedResultUrl": "https://app.notion.com/p/3d8f420e9c5f80b68e02f3c80ff0301e"
+        },
+        "returnAll": true,
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Fecha de Fallo|date",
+              "condition": "on_or_after",
+              "dateValue": "={{ $now.minus({ days: 7 }).startOf('day') }}"
+            },
+            {
+              "key": "Fecha de Fallo|date",
+              "condition": "before",
+              "dateValue": "={{ $now.plus({ days: 1 }).startOf('day') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        6336,
+        6256
+      ],
+      "id": "3576c0a5-e68c-4991-b9f6-43913ca720eb",
+      "name": "Traer Errores del Día",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const errores = $('Traer Errores del Día').all();\nconst totalPedidos = $('Traer Pedidos del Día').all().length;\nconst tasaError = totalPedidos > 0 ? +(errores.length / totalPedidos * 100).toFixed(1) : 0;\nconst tasaReintentos = $('Calcular Tiempos y Reintentos').first().json.tasa_reintentos;\nconst tiempoReaccion = $('Calcular Tiempo de Reacción').first().json.tiempo_reaccion_promedio;\nconst tiempos = $('Calcular Tiempos y Reintentos').first().json.filas_tiempos;\nconst latenciaAlta = tiempos.some(t => t.tiempo_promedio > 2000);\n\nlet indice = 100 - (tasaError*2) - (tasaReintentos*1) - (tiempoReaccion>5?10:0) - (latenciaAlta?10:0);\nindice = Math.max(0, Math.round(indice));\nconst estado = indice>=85 ? 'Óptimo' : indice>=60 ? 'Estable' : 'Crítico';\n\nconst porSistema = {};\nerrores.forEach(e => {\n  const s = e.json['property_sistema_afectado'] || 'Desconocido';\n  porSistema[s] = (porSistema[s]||0)+1;\n});\nconst desglose = Object.entries(porSistema).map(([s,c])=>`${s} ${c}`).join(' · ');\n\nreturn [{ json: {\n  errores_hoy: errores.length,\n  errores_desglose: desglose || 'Sin errores',\n  tasa_error: tasaError,\n  tasa_reintentos: tasaReintentos,\n  tiempo_reaccion: tiempoReaccion,\n  indice_salud: indice,\n  estado_salud_sistema: estado,\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7136,
+        6320
+      ],
+      "id": "d0c99c83-2c9f-445b-87d8-37bab899a675",
+      "name": "Agrupar Errores por Sistema"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3ddf420e-9c5f-80d4-8dcf-000b5e4b55ad",
+          "mode": "list",
+          "cachedResultName": "Dashboard de Control",
+          "cachedResultUrl": "https://app.notion.com/p/3ddf420e9c5f8043bd67e08bed281254"
+        },
+        "title": "{{ $now.format('dd/MM/yyyy HH:mm') }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Fecha y Hora|date",
+              "date": "={{ $now.toISO() }}"
+            },
+            {
+              "key": "Volumen del día|number",
+              "numberValue": "={{ $('Traer Pedidos del Día').all().length }}"
+            },
+            {
+              "key": "Tasa de Efectividad|number",
+              "numberValue": "={{ $('Parsear KPI Negocio').item.json.tasa_efectividad }}"
+            },
+            {
+              "key": "Tasa de Cancelación|number",
+              "numberValue": "={{ $('Parsear KPI Negocio').item.json.tasa_cancelacion }}"
+            },
+            {
+              "key": "Causa Raíz Cancelación|rich_text",
+              "textContent": "={{ $('Parsear KPI Negocio').item.json.causa_raiz }}"
+            },
+            {
+              "key": "Tasa de Escalamiento HITL|number",
+              "numberValue": "={{ $('Parsear KPI Negocio').item.json.tasa_escalamiento }}"
+            },
+            {
+              "key": "Estado de Salud Operativa|select",
+              "selectValue": "={{ $('Parsear KPI Negocio').item.json.estado_salud_operativa }}"
+            },
+            {
+              "key": "Tasa de Error del Sistema|number",
+              "numberValue": "={{ $('Agrupar Errores por Sistema').first().json.tasa_error }}"
+            },
+            {
+              "key": "Tasa de Reintentos|number",
+              "numberValue": "={{ $('Agrupar Errores por Sistema').first().json.tasa_reintentos }}"
+            },
+            {
+              "key": "Tiempo de Reacción (minutos)|number",
+              "numberValue": "={{ $('Agrupar Errores por Sistema').first().json.tiempo_reaccion }}"
+            },
+            {
+              "key": "Errores Hoy|number",
+              "numberValue": "={{ $('Agrupar Errores por Sistema').first().json.errores_hoy }}"
+            },
+            {
+              "key": "Errores Desglose|rich_text",
+              "textContent": "={{ $('Agrupar Errores por Sistema').first().json.errores_desglose }}"
+            },
+            {
+              "key": "Indice de Salud del Sistema|number",
+              "numberValue": "={{ $('Agrupar Errores por Sistema').first().json.indice_salud }}"
+            },
+            {
+              "key": "Estado de Salud del Sistema|select",
+              "selectValue": "={{ $('Agrupar Errores por Sistema').first().json.estado_salud_sistema }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        7584,
+        5728
+      ],
+      "id": "ff9bfc21-de2a-4d24-ac20-7effa0d398a5",
+      "name": "Guardar Reporte en Dashboard",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "jon.villarroel.j@gmail.com",
+        "subject": "=Dashboard de Control — {{ $now.format('dd/MM/yyyy') }}",
+        "message": "=<div style=\"font-family: Arial, sans-serif; max-width: 600px;\">\n\n  <h3 style=\"color:#1E3A5F; border-bottom: 2px solid #1E3A5F; padding-bottom: 6px;\">📊 KPI Negocio</h3>\n  <p>Volumen del día: {{ $('Parsear KPI Negocio').item.json.volumen }} pedidos</p>\n  <p>Tasa de efectividad: {{ $('Parsear KPI Negocio').item.json.tasa_efectividad }}%</p>\n  <p>Tasa de cancelación: {{ $('Parsear KPI Negocio').item.json.tasa_cancelacion }}% (Causa raíz: {{ $('Parsear KPI Negocio').item.json.causa_raiz }})</p>\n  <p>Tasa de escalamiento HITL: {{ $('Parsear KPI Negocio').item.json.tasa_escalamiento }}%</p>\n  <p>Estado de salud operativa: {{ $('Parsear KPI Negocio').item.json.estado_salud_operativa }}</p>\n\n  <h3 style=\"color:#B23B34; border-bottom: 2px solid #B23B34; padding-bottom: 6px; margin-top: 30px;\">⚙️ KPI Sistema</h3>\n  <p>Tasa de error del sistema: {{ $('Agrupar Errores por Sistema').first().json.tasa_error }}%</p>\n  <p>Tasa de reintentos: {{ $('Agrupar Errores por Sistema').first().json.tasa_reintentos }}%</p>\n  <p>Tiempo de reacción promedio: {{ $('Agrupar Errores por Sistema').first().json.tiempo_reaccion }} min</p>\n  <p>Errores hoy: {{ $('Agrupar Errores por Sistema').first().json.errores_hoy }} ({{ $('Agrupar Errores por Sistema').first().json.errores_desglose }})</p>\n  <p>Estado de salud del sistema: {{ $('Agrupar Errores por Sistema').first().json.estado_salud_sistema }}</p>\n\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        7584,
+        5920
+      ],
+      "id": "4b10362d-1c37-42bc-9fb5-78b6c2848482",
+      "name": "Enviar Reporte por Correo",
+      "webhookId": "b1de97bb-7bd0-48a1-ad8c-c88011fcb642",
+      "retryOnFail": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "sDAHmxlP0n80mpG5",
+          "name": "Gmail account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "98fe899a-86b8-4b68-bc00-8647aa8c402f",
+              "leftValue": "={{ $json.datos_completos }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -320,
+        2736
+      ],
+      "id": "57d7ea68-293e-4e6c-bff5-8dc5f1b2605a",
+      "name": "¿Datos Completos?"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Estado|select",
+              "selectValue": "=Cancelado - Datos Incompletos"
+            },
+            {
+              "key": "=Fecha Primera Reacción|date",
+              "date": "={{ $now.toISO() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        7584,
+        3136
+      ],
+      "id": "37a886e7-e7d4-41c7-bc64-64c260d3dd5b",
+      "name": "Registrar Pedido Incompleto",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $json.id }}",
+          "__regex": "^([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Estado|select",
+              "selectValue": "={{ $('Interpretar Evento Telegram').item.json.estado }}"
+            },
+            {
+              "key": "=Telegram Chat ID|rich_text",
+              "textContent": "={{ $('Interpretar Evento Telegram').item.json.chat_id.toString() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        6560,
+        3904
+      ],
+      "id": "5be29351-515d-433b-81d3-26379adbbdb7",
+      "name": "Actualizar Pedido Botón",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "<h3>Decisión registrada ✅</h3>\n<p>Ya puedes cerrar esta pestaña.</p>",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        6336,
+        6656
+      ],
+      "id": "d46003f3-a15d-49e0-b92b-dd3bf35f9a6e",
+      "name": "Respuesta a la decisión"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Cancelación Enviada|checkbox",
+              "checkboxValue": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        7568,
+        -816
+      ],
+      "id": "283daa56-c152-46d2-97d4-88a531dbaabe",
+      "name": "Marcar Cancelación Enviada TimeOut",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.item.json;\nconst campos = ['Teléfono', 'Dirección', 'Producto'];\nconst faltante = campos.find(c => !item[c] || String(item[c]).trim() === '');\n\nreturn [{\n  json: {\n    ...item,\n    datos_completos: !faltante,\n    campo_faltante: faltante || null\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -544,
+        -1024
+      ],
+      "id": "b6fad956-53a0-404b-8b45-175815d786c3",
+      "name": "Validar Datos Requeridos",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "__regex": "^([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Dirección Validada|select",
+              "selectValue": "={{ $json.result.verdict.addressComplete ? 'TRUE' : 'FALSE' }} "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        7584,
+        3472
+      ],
+      "id": "334275d6-ac30-450e-bf6a-6f01f0cde190",
+      "name": "Marcar Dirección Validada",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Estado|select",
+              "selectValue": "=Cancelado - Mal Historial"
+            },
+            {
+              "key": "=Cancelación Enviada|checkbox",
+              "checkboxValue": true
+            },
+            {
+              "key": "=Fecha Primera Reacción|date",
+              "date": "={{ $now.toISO() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        7584,
+        2944
+      ],
+      "id": "02cc1717-8b9e-4224-9484-bdd68acfd5b3",
+      "name": "Registrar Cancelación del Pedido (Mal Historial)",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ca343d49-fc97-4381-9d5c-08f7c39d6706",
+              "name": "motivo_cancelacion",
+              "value": "Rechazo manual (revisión humana)",
+              "type": "string"
+            },
+            {
+              "id": "223d7adf-8f7a-4b6c-aa54-3fc54248a9de",
+              "name": "estado_cancelacion",
+              "value": "Cancelado - Rechazo HITL",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        6560,
+        6544
+      ],
+      "id": "bda4594f-0e4c-45bf-a1e9-4e57d54626d4",
+      "name": "Definir Motivo (Rechazo HITL)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "44e88c38-521f-4b5d-9e91-c3b78ea55876",
+              "name": "motivo_cancelacion",
+              "value": "Error técnico en validación",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        6560,
+        -1024
+      ],
+      "id": "34a972a2-d206-498e-86ff-5cc3c685ec71",
+      "name": "Definir Motivo (Error Validación)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "28a0c796-eadb-4400-a2af-4bf56bfa5966",
+              "name": "motivo_cancelacion",
+              "value": "Cliente no confirmó a tiempo",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        6560,
+        2720
+      ],
+      "id": "da156d30-6d94-4433-9d30-8541f9f0698c",
+      "name": "Definir Motivo (Timeout Confirmación)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "16861780-e2b5-42c0-aec3-8aa86c8d224d",
+              "name": "motivo_cancelacion",
+              "value": "Cliente no corrigió la dirección a tiempo",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        6560,
+        1648
+      ],
+      "id": "f279bded-1bbc-4e32-b383-e4f24230cb85",
+      "name": "Definir Motivo (Timeout Dirección)"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Fecha Primera Reacción|date",
+              "date": "={{ $now.toISO() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        1600,
+        544
+      ],
+      "id": "fe111450-d340-4e1b-9539-bec5f1b4197e",
+      "name": "Marcar Primera Reacción",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.output[0].content[0].text;\nconst limpio = raw.replace(/```json|```/g, '').trim();\nconst kpi = JSON.parse(limpio);\nreturn [{ json: kpi }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7136,
+        5824
+      ],
+      "id": "c4844b41-77bb-420b-807b-d62d7fa7a3b6",
+      "name": "Parsear KPI Negocio"
+    },
+    {
+      "parameters": {
+        "jsCode": "const pedidos = $input.all().filter(p => p.json.property_fecha_primera_reacción);\nconst minutos = pedidos\n  .map(p => {\n    const ingreso = new Date(p.json.property_fecha_ingreso);\n    const reaccion = new Date(p.json.property_fecha_primera_reacción);\n    return (reaccion - ingreso) / 60000;\n  })\n  .filter(m => !isNaN(m) && isFinite(m));\nconst promedio = minutos.length ? +(minutos.reduce((a,b)=>a+b,0)/minutos.length).toFixed(1) : 0;\nreturn [{ json: { tiempo_reaccion_promedio: promedio } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6048,
+        6256
+      ],
+      "id": "b06664cc-5881-48ed-82dc-5f7129563dee",
+      "name": "Calcular Tiempo de Reacción"
+    },
+    {
+      "parameters": {
+        "url": "=https://jons-macbook-pro.tailc0f6c8.ts.net/api/v1/executions?workflowId={{ $workflow.id }}&limit=15&includeData=true",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        6560,
+        6320
+      ],
+      "id": "56e1ef7f-7e25-4c25-a2e9-a4202236f094",
+      "name": "Consultar Ejecuciones del Día",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "7JiNlvOz4guC8P81",
+          "name": "Header Auth account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const CATEGORIA_POR_NODO = {\n  'Actualizar Pedido (Confirmación Detectada)': 'Notion',\n  'Actualizar Pedido Botón': 'Notion',\n  'Actualizar Pedido Texto': 'Notion',\n  'Buscar Pedido por Chat ID': 'Notion',\n  'Buscar Pedido por Chat ID (Amplio)': 'Notion',\n  'Buscar Pedido por ID': 'Notion',\n  'Calcular KPI Negocio': 'OpenAI',\n  'Cancelar Pedido': 'Telegram',\n  'Clasificar Intención del Mensaje': 'OpenAI',\n  'Confirmar Pedido': 'Telegram',\n  'Consultar Historial Comprador': 'Notion',\n  'Enviar Ack Modificar Dirección': 'Telegram',\n  'Enviar Confirmación': 'Telegram',\n  'Enviar Confirmación Inmediata (Botón)': 'Telegram',\n  'Enviar Confirmación Inmediata (Texto)': 'Telegram',\n  'Enviar Recordatorio (1/2)': 'Telegram',\n  'Enviar Recordatorio (2/2)': 'Telegram',\n  'Enviar Recordatorio Dirección (1/2)': 'Telegram',\n  'Enviar Recordatorio Dirección (2/2)': 'Telegram',\n  'Enviar Reporte por Correo': 'Gmail',\n  'Evaluar Riesgo - Motor de Decisión': 'OpenAI',\n  'Guardar Reporte en Dashboard': 'Notion',\n  'Traer Datos Actuales HITL': 'Notion',\n  'Marcar Revisión Humana Requerida': 'Notion',\n  'HITL': 'Gmail',\n  'Interpretar Corrección de Dirección': 'OpenAI',\n  'Marcar Cancelación Enviada TimeOut': 'Notion',\n  'Marcar Confirmación Enviada (Botón)': 'Notion',\n  'Marcar Confirmación Enviada (Texto)': 'Notion',\n  'Marcar Confirmación Enviada (Validación Dirección)': 'Notion',\n  'Marcar Dirección Validada': 'Notion',\n  'Marcar Recordatorio Enviado (1/2)': 'Notion',\n  'Marcar Recordatorio Enviado (2/2)': 'Notion',\n  'Notificar Cancelación (Mal Historial)': 'Telegram',\n  'Notificar Mensaje Sin Pedido Asociado': 'Gmail',\n  'Notificar falla Slack': 'Gmail',\n  'Registrar Cancelación del Pedido': 'Notion',\n  'Registrar Cancelación del Pedido (Mal Historial)': 'Notion',\n  'Registrar Confirmación del Pedido': 'Notion',\n  'Registrar Log': 'Notion',\n  'Registrar Pedido Incompleto': 'Notion',\n  'Revalidar Dirección Corregida': 'Google',\n  'Traer Errores del Día': 'Notion',\n  'Traer Estado Actualizado (1h)': 'Notion',\n  'Traer Estado Actualizado C (24h)': 'Notion',\n  'Traer Estado Actualizado C (7h)': 'Notion',\n  'Traer Estado Actualizado D (24h)': 'Notion',\n  'Traer Estado Actualizado D (7h)': 'Notion',\n  'Traer Pedidos del Día': 'Notion',\n  'Validar Dirección': 'Google',\n  'Marcar Primera Reacción': 'Notion',\n  'Guardar Tiempos por Integración': 'Notion',\n};\n\nconst ejecuciones = $input.first().json.data || [];\nconst porIntegracion = {};\nlet totalNodos = 0, conReintento = 0;\n\nfor (const ej of ejecuciones) {\n  const runData = (ej.data && ej.data.resultData && ej.data.resultData.runData) || {};\n  for (const [nombreNodo, corridas] of Object.entries(runData)) {\n    const cat = CATEGORIA_POR_NODO[nombreNodo];\n    if (!cat) continue;\n    totalNodos++;\n    if (corridas.length > 1) conReintento++;\n    const tiempoMs = corridas[corridas.length - 1].executionTime || 0;\n    if (!porIntegracion[cat]) porIntegracion[cat] = [];\n    porIntegracion[cat].push(tiempoMs);\n  }\n}\n\nconst filasTiempos = Object.entries(porIntegracion).map(([integracion, tiempos]) => ({\n  json: { integracion, tiempo_promedio: Math.round(tiempos.reduce((a,b)=>a+b,0) / tiempos.length) }\n}));\n\nconst tasaReintentos = totalNodos > 0 ? +(conReintento / totalNodos * 100).toFixed(1) : 0;\nreturn [{ json: { filas_tiempos: filasTiempos, tasa_reintentos: tasaReintentos } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6848,
+        6400
+      ],
+      "id": "262272d7-a1a6-487b-a027-59922e97bc25",
+      "name": "Calcular Tiempos y Reintentos"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "filas_tiempos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        7360,
+        6464
+      ],
+      "id": "b1dad1d2-c891-4abe-bc75-fc33a4837e7c",
+      "name": "Separar Filas de Tiempos"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3ddf420e-9c5f-807e-b94e-000b4f998d51",
+          "mode": "list",
+          "cachedResultName": "Tiempos por Integración",
+          "cachedResultUrl": "https://app.notion.com/p/3ddf420e9c5f80728a29ec18d9aefed7"
+        },
+        "title": "={{ $json.json.integracion }}- {{ $now.format('dd/MM HH:mm') }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Date|date",
+              "date": "={{ $now.toISO() }}"
+            },
+            {
+              "key": "Integración|select",
+              "selectValue": "={{ $json.json.integracion }}"
+            },
+            {
+              "key": "Tiempo Promedio (ms)|number",
+              "numberValue": "={{ $json.json.tiempo_promedio }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        7584,
+        6464
+      ],
+      "id": "e07ce327-7d0d-418f-a18d-a71b1bf5c27b",
+      "name": "Guardar Tiempos por Integración",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Sos un analista de operaciones. Calculá los KPIs diarios del listado de pedidos que viene en <pedidos_del_dia>.\n\nCada pedido es un objeto JSON. El valor de KPI puede venir en el campo \"property_kpi\" o \"KPI\" (usá el que esté presente). El valor de Estado puede venir en \"property_estado\" o \"Estado\" (usá el que esté presente). Ignorá mayúsculas/minúsculas al comparar los valores de texto.\n\nVariables:\nTOTAL = total de filas\nENVIADOS = filas con KPI = \"Enviado\"\nCANCELADOS = filas con KPI = \"Cancelado\"\nREVISION = filas con KPI = \"Revisión Humana\"\nCAUSA_RAIZ = valor de Estado más repetido entre las filas con KPI = \"Cancelado\" (si no hay ninguna, \"N/A\")\n\nReglas:\n- Redondeá los porcentajes a 1 decimal.\n- Si TOTAL = 0, devolvé todos los porcentajes en 0 y causa_raiz en \"N/A\".\n- estado_salud_operativa debe ser EXACTAMENTE uno de estos 3 valores literales, respetando mayúsculas y tildes tal cual están escritos acá: \"Óptimo\", \"Estable\", \"Crítico\". Nunca en mayúsculas completas, nunca sin tilde. Usá \"Óptimo\" si tasa_efectividad > 70, \"Estable\" si está entre 60 y 70, \"Crítico\" si es menor a 60.\n- Devolvé ÚNICAMENTE este JSON, sin texto antes ni después, sin bloque de código Markdown:\n\n{\n  \"volumen\": TOTAL,\n  \"tasa_efectividad\": (ENVIADOS/TOTAL)*100,\n  \"tasa_cancelacion\": (CANCELADOS/TOTAL)*100,\n  \"causa_raiz\": \"CAUSA_RAIZ\",\n  \"tasa_escalamiento\": (REVISION/TOTAL)*100,\n  \"estado_salud_operativa\": \"Óptimo, Estable o Crítico según la regla de arriba\"\n}\n\n<pedidos_del_dia>\n{{ JSON.stringify($('Traer Pedidos del Día').all().map(i => i.json)) }}\n</pedidos_del_dia>"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        6784,
+        5744
+      ],
+      "id": "06de1936-a385-445a-831b-14666be1866b",
+      "name": "Calcular KPI Negocio",
+      "executeOnce": true,
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "p9KRrgU6vkEWueCB",
+          "name": "OpenAI account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.error;\nconst esObjeto = raw && typeof raw === 'object';\n\nconst mensaje = esObjeto ? (raw.message || 'Sin detalle') : (raw || 'Sin detalle');\nconst httpCode = esObjeto ? (raw.httpCode || 'N/A') : 'N/A';\nconst nodoFallido = $prevNode.name;\n\nconst CATEGORIA_POR_NODO = {\n  'Actualizar Pedido (Confirmación Detectada)': 'Notion', 'Actualizar Pedido Botón': 'Notion',\n  'Actualizar Pedido Texto': 'Notion', 'Buscar Pedido por Chat ID': 'Notion',\n  'Buscar Pedido por Chat ID (Amplio)': 'Notion', 'Buscar Pedido por ID': 'Notion',\n  'Calcular KPI Negocio': 'OpenAI', 'Cancelar Pedido': 'Telegram',\n  'Clasificar Intención del Mensaje': 'OpenAI', 'Confirmar Pedido': 'Telegram',\n  'Consultar Historial Comprador': 'Notion', 'Enviar Ack Modificar Dirección': 'Telegram',\n  'Enviar Confirmación': 'Telegram', 'Enviar Confirmación Inmediata (Botón)': 'Telegram',\n  'Enviar Confirmación Inmediata (Texto)': 'Telegram', 'Enviar Recordatorio (1/2)': 'Telegram',\n  'Enviar Recordatorio (2/2)': 'Telegram', 'Enviar Recordatorio Dirección (1/2)': 'Telegram',\n  'Enviar Recordatorio Dirección (2/2)': 'Telegram', 'Enviar Reporte por Correo': 'Gmail',\n  'Evaluar Riesgo - Motor de Decisión': 'OpenAI', 'Guardar Reporte en Dashboard': 'Notion',\n  'HITL': 'Gmail', 'Interpretar Corrección de Dirección': 'OpenAI',\n  'Marcar Cancelación Enviada TimeOut': 'Notion', 'Marcar Confirmación Enviada (Botón)': 'Notion',\n  'Marcar Confirmación Enviada (Texto)': 'Notion', 'Marcar Confirmación Enviada (Validación Dirección)': 'Notion',\n  'Marcar Dirección Validada': 'Notion', 'Marcar Recordatorio Enviado (1/2)': 'Notion',\n  'Marcar Recordatorio Enviado (2/2)': 'Notion', 'Notificar Cancelación (Mal Historial)': 'Telegram',\n  'Notificar Mensaje Sin Pedido Asociado': 'Gmail', 'Registrar Cancelación del Pedido': 'Notion',\n  'Registrar Cancelación del Pedido (Mal Historial)': 'Notion', 'Registrar Confirmación del Pedido': 'Notion',\n  'Registrar Pedido Incompleto': 'Notion', 'Revalidar Dirección Corregida': 'Google',\n  'Traer Errores del Día': 'Notion', 'Traer Estado Actualizado (1h)': 'Notion',\n  'Traer Estado Actualizado C (24h)': 'Notion', 'Traer Estado Actualizado C (7h)': 'Notion',\n  'Traer Estado Actualizado D (24h)': 'Notion', 'Traer Estado Actualizado D (7h)': 'Notion',\n  'Traer Pedidos del Día': 'Notion', 'Validar Dirección': 'Google',\n  'Marcar Primera Reacción': 'Notion', 'Guardar Tiempos por Integración': 'Notion',\n  'Registrar Log': 'Notion', 'Notificar falla Slack': 'Gmail',\n'Traer Datos Actuales HITL': 'Notion',\n  'Marcar Revisión Humana Requerida': 'Notion',\n};\n\nreturn [{ json: {\n  ...$json,\n  nodo_fallido: nodoFallido,\n  sistema_afectado: CATEGORIA_POR_NODO[nodoFallido] || 'Desconocido',\n  mensaje_error: mensaje,\n  codigo_http: httpCode,\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7808,
+        -416
+      ],
+      "id": "af6f5fc9-7133-4ed5-a2f1-67f5c8de043c",
+      "name": "Extraer Detalle del Error"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "get",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Pedido Nuevo Recibido').isExecuted ? $('Pedido Nuevo Recibido').item.json.id \n  : $('Buscar Pedido por Chat ID (Amplio)').isExecuted ? $('Buscar Pedido por Chat ID (Amplio)').item.json.id \n  : $('Buscar Pedido por ID').isExecuted ? $('Buscar Pedido por ID').item.json.id \n  : $('Buscar Pedido por Chat ID').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        7840,
+        -832
+      ],
+      "id": "91840437-1996-484b-9efa-0ac7ad601270",
+      "name": "Traer Datos Actuales HITL",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "94e5e70f-e069-4c23-904b-9ed3644eac1f",
+              "leftValue": "={{ $json.property_requiere_revisión_humana }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        8256,
+        -880
+      ],
+      "id": "eb031666-56e8-4e2c-9ad0-e42464e641ed",
+      "name": "¿Ya Requiere Revisión Humana?"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Requiere Revisión Humana|checkbox",
+              "checkboxValue": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        8688,
+        -1056
+      ],
+      "id": "d7767417-7e60-4434-b84b-589952c1bf5c",
+      "name": "Marcar Revisión Humana Requerida",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "x3ptNIcrvQ0HOjlf",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Avisar por Slack (técnico)": {
+      "main": [
+        [
+          {
+            "node": "Registrar Log",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notificar falla Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Qué decidió?": {
+      "main": [
+        [
+          {
+            "node": "Registrar Confirmación del Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Definir Motivo (Rechazo HITL)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmar Pedido": {
+      "main": [
+        [
+          {
+            "node": "Marcar Confirmación Enviada (Validación Dirección)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cancelar Pedido": {
+      "main": [
+        [
+          {
+            "node": "Marcar Cancelación Enviada TimeOut",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HITL": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "Decisión HITL": {
+      "main": [
+        [
+          {
+            "node": "Respuesta a la decisión",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "¿Qué decidió?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Log": {
+      "main": [
+        [
+          {
+            "node": "Traer Datos Actuales HITL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notificar falla Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedido Nuevo Recibido": {
+      "main": [
+        [
+          {
+            "node": "Validar Datos Requeridos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Dirección": {
+      "main": [
+        [
+          {
+            "node": "Combinar Dirección e Historial",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Marcar Dirección Validada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combinar Dirección e Historial": {
+      "main": [
+        [
+          {
+            "node": "Evaluar Riesgo - Motor de Decisión",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Historial Comprador": {
+      "main": [
+        [
+          {
+            "node": "Combinar Dirección e Historial",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluar Riesgo - Motor de Decisión": {
+      "main": [
+        [
+          {
+            "node": "Interpretar Desición de Riesgo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Continuar o Cancelar?": {
+      "main": [
+        [
+          {
+            "node": "Armar Mensaje de Confirmación",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Armar Mensaje de Cancelación (Mal Historial)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Mensaje de Confirmación": {
+      "main": [
+        [
+          {
+            "node": "Enviar Confirmación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Confirmación": {
+      "main": [
+        [
+          {
+            "node": "Marcar Primera Reacción",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Mensaje de Cancelación (Mal Historial)": {
+      "main": [
+        [
+          {
+            "node": "Notificar Cancelación (Mal Historial)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar Cancelación (Mal Historial)": {
+      "main": [
+        [
+          {
+            "node": "Registrar Cancelación del Pedido (Mal Historial)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Esperar 1h": {
+      "main": [
+        [
+          {
+            "node": "Traer Estado Actualizado (1h)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traer Estado Actualizado (1h)": {
+      "main": [
+        [
+          {
+            "node": "¿Qué Respondió el Cliente? (1h)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Qué Respondió el Cliente? (1h)": {
+      "main": [
+        [
+          {
+            "node": "¿Dirección Válida?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "¿Ya se Recibió la Dirección Corregida? (1h)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Armar Recordatorio (1/2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Dirección Válida?": {
+      "main": [
+        [
+          {
+            "node": "Registrar Confirmación del Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Traer Datos Actuales HITL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Qué Respondió el Cliente? (7h)": {
+      "main": [
+        [
+          {
+            "node": "¿Dirección Válida?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "¿Ya se Recibió la Dirección Corregida? (7h)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Armar Recordatorio (2/2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Interpretar Desición de Riesgo": {
+      "main": [
+        [
+          {
+            "node": "¿Continuar o Cancelar?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Botón Presionado": {
+      "main": [
+        [
+          {
+            "node": "Interpretar Evento Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Interpretar Evento Telegram": {
+      "main": [
+        [
+          {
+            "node": "¿Vino por Botón o Texto?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Vino por Botón o Texto?": {
+      "main": [
+        [
+          {
+            "node": "Buscar Pedido por ID",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar Pedido por Chat ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Pedido por Chat ID": {
+      "main": [
+        [
+          {
+            "node": "¿Se Encontró el Pedido?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Pedido por ID": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Pedido Botón",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar Pedido Texto": {
+      "main": [
+        [
+          {
+            "node": "Interpretar Corrección de Dirección",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Se Encontró el Pedido?": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Pedido Texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar Pedido por Chat ID (Amplio)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Pedido por Chat ID (Amplio)": {
+      "main": [
+        [
+          {
+            "node": "¿Se Encontró Pedido Amplio?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Se Encontró Pedido Amplio?": {
+      "main": [
+        [
+          {
+            "node": "Clasificar Intención del Mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notificar Mensaje Sin Pedido Asociado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clasificar Intención del Mensaje": {
+      "main": [
+        [
+          {
+            "node": "Interpretar Intención",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Interpretar Intención": {
+      "main": [
+        [
+          {
+            "node": "¿Cuál es la Intención?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Cuál es la Intención?": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Pedido Texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Actualizar Pedido (Confirmación Detectada)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Traer Datos Actuales HITL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar Pedido (Confirmación Detectada)": {
+      "main": [
+        [
+          {
+            "node": "Armar Mensaje de Confirmación (Inmediato Texto)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Confirmar o Modificar?": {
+      "main": [
+        [
+          {
+            "node": "Armar Mensaje de Confirmación (Inmediato)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Ack Modificar Dirección",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Mensaje de Confirmación (Inmediato)": {
+      "main": [
+        [
+          {
+            "node": "Enviar Confirmación Inmediata (Botón)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Confirmación Inmediata (Botón)": {
+      "main": [
+        [
+          {
+            "node": "Marcar Confirmación Enviada (Botón)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Confirmación Enviada (Botón)": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Mensaje de Confirmación (Inmediato Texto)": {
+      "main": [
+        [
+          {
+            "node": "Enviar Confirmación Inmediata (Texto)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Confirmación Inmediata (Texto)": {
+      "main": [
+        [
+          {
+            "node": "Marcar Confirmación Enviada (Texto)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Ack Modificar Dirección": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Ya se Recibió la Dirección Corregida? (1h)": {
+      "main": [
+        [
+          {
+            "node": "Interpretar Corrección de Dirección",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Armar Recordatorio Dirección (1/2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Recordatorio Dirección (1/2)": {
+      "main": [
+        [
+          {
+            "node": "Enviar Recordatorio Dirección (1/2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Esperar Dirección (hasta 7h)": {
+      "main": [
+        [
+          {
+            "node": "Traer Estado Actualizado D (7h)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Ya se Recibió la Dirección Corregida? (7h)": {
+      "main": [
+        [
+          {
+            "node": "Interpretar Corrección de Dirección",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Armar Recordatorio Dirección (2/2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Recordatorio Dirección (1/2)": {
+      "main": [
+        [
+          {
+            "node": "Esperar Dirección (hasta 7h)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Recordatorio Dirección (2/2)": {
+      "main": [
+        [
+          {
+            "node": "Enviar Recordatorio Dirección (2/2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Recordatorio Dirección (2/2)": {
+      "main": [
+        [
+          {
+            "node": "Esperar Dirección (hasta 24h)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Esperar Dirección (hasta 24h)": {
+      "main": [
+        [
+          {
+            "node": "Traer Estado Actualizado D (24h)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Ya se Recibió la Dirección Corregida? (24h)": {
+      "main": [
+        [
+          {
+            "node": "Interpretar Corrección de Dirección",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Definir Motivo (Timeout Dirección)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Confirmación del Pedido": {
+      "main": [
+        [
+          {
+            "node": "¿Confirmación Ya Enviada?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Confirmación Ya Enviada?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Armar Mensaje de Confirmación (Validación Dirección)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Mensaje de Confirmación (Validación Dirección)": {
+      "main": [
+        [
+          {
+            "node": "Confirmar Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Confirmación Enviada (Validación Dirección)": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Cancelación del Pedido": {
+      "main": [
+        [
+          {
+            "node": "Armar Mensaje de Cancelación (Timeout/Rechazo)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Mensaje de Cancelación (Timeout/Rechazo)": {
+      "main": [
+        [
+          {
+            "node": "Cancelar Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Interpretar Corrección de Dirección": {
+      "main": [
+        [
+          {
+            "node": "Interpretar Corrección Detectada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Interpretar Corrección Detectada": {
+      "main": [
+        [
+          {
+            "node": "¿Cómo Quedó la Dirección?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Cómo Quedó la Dirección?": {
+      "main": [
+        [
+          {
+            "node": "¿Dirección Válida?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Revalidar Dirección Corregida",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Traer Datos Actuales HITL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Revalidar Dirección Corregida": {
+      "main": [
+        [
+          {
+            "node": "¿Dirección Válida?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Recordatorio (1/2)": {
+      "main": [
+        [
+          {
+            "node": "Enviar Recordatorio (1/2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Recordatorio (1/2)": {
+      "main": [
+        [
+          {
+            "node": "Marcar Recordatorio Enviado (1/2)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Esperar (hasta 7h)": {
+      "main": [
+        [
+          {
+            "node": "Traer Estado Actualizado C (7h)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Recordatorio Enviado (1/2)": {
+      "main": [
+        [
+          {
+            "node": "Esperar (hasta 7h)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Recordatorio Enviado (2/2)": {
+      "main": [
+        [
+          {
+            "node": "Esperar Final (hasta 24h)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traer Estado Actualizado D (7h)": {
+      "main": [
+        [
+          {
+            "node": "¿Ya se Recibió la Dirección Corregida? (7h)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traer Estado Actualizado D (24h)": {
+      "main": [
+        [
+          {
+            "node": "¿Ya se Recibió la Dirección Corregida? (24h)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traer Estado Actualizado C (7h)": {
+      "main": [
+        [
+          {
+            "node": "¿Qué Respondió el Cliente? (7h)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Recordatorio (2/2)": {
+      "main": [
+        [
+          {
+            "node": "Enviar Recordatorio (2/2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Recordatorio (2/2)": {
+      "main": [
+        [
+          {
+            "node": "Marcar Recordatorio Enviado (2/2)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Esperar Final (hasta 24h)": {
+      "main": [
+        [
+          {
+            "node": "Traer Estado Actualizado C (24h)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traer Estado Actualizado C (24h)": {
+      "main": [
+        [
+          {
+            "node": "¿Confirmó o se Cancela? (Final)?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Confirmó o se Cancela? (Final)?": {
+      "main": [
+        [
+          {
+            "node": "¿Dirección Válida?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Definir Motivo (Timeout Confirmación)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cierre de Día Programado": {
+      "main": [
+        [
+          {
+            "node": "Traer Pedidos del Día",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traer Pedidos del Día": {
+      "main": [
+        [
+          {
+            "node": "Calcular KPI Negocio",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Calcular Tiempo de Reacción",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combinar KPI Negocio y Sistema": {
+      "main": [
+        [
+          {
+            "node": "Guardar Reporte en Dashboard",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Enviar Reporte por Correo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traer Errores del Día": {
+      "main": [
+        [
+          {
+            "node": "Consultar Ejecuciones del Día",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agrupar Errores por Sistema": {
+      "main": [
+        [
+          {
+            "node": "Combinar KPI Negocio y Sistema",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Guardar Reporte en Dashboard": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Reporte por Correo": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Datos Completos?": {
+      "main": [
+        [
+          {
+            "node": "Validar Dirección",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Consultar Historial Comprador",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registrar Pedido Incompleto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Pedido Incompleto": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar Pedido Botón": {
+      "main": [
+        [
+          {
+            "node": "¿Confirmar o Modificar?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respuesta a la decisión": {
+      "main": [
+        []
+      ]
+    },
+    "Notificar Mensaje Sin Pedido Asociado": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Cancelación Enviada TimeOut": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Datos Requeridos": {
+      "main": [
+        [
+          {
+            "node": "¿Datos Completos?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Definir Motivo (Error Validación)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Dirección Validada": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Cancelación del Pedido (Mal Historial)": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir Motivo (Rechazo HITL)": {
+      "main": [
+        [
+          {
+            "node": "Registrar Cancelación del Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir Motivo (Error Validación)": {
+      "main": [
+        [
+          {
+            "node": "Registrar Cancelación del Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir Motivo (Timeout Confirmación)": {
+      "main": [
+        [
+          {
+            "node": "Registrar Cancelación del Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir Motivo (Timeout Dirección)": {
+      "main": [
+        [
+          {
+            "node": "Registrar Cancelación del Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Primera Reacción": {
+      "main": [
+        [
+          {
+            "node": "Esperar 1h",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsear KPI Negocio": {
+      "main": [
+        [
+          {
+            "node": "Combinar KPI Negocio y Sistema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Ejecuciones del Día": {
+      "main": [
+        [
+          {
+            "node": "Calcular Tiempos y Reintentos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Tiempo de Reacción": {
+      "main": [
+        [
+          {
+            "node": "Traer Errores del Día",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Tiempos y Reintentos": {
+      "main": [
+        [
+          {
+            "node": "Separar Filas de Tiempos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Agrupar Errores por Sistema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separar Filas de Tiempos": {
+      "main": [
+        [
+          {
+            "node": "Guardar Tiempos por Integración",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar Tiempos por Integración": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular KPI Negocio": {
+      "main": [
+        [
+          {
+            "node": "Parsear KPI Negocio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer Detalle del Error": {
+      "main": [
+        [
+          {
+            "node": "Avisar por Slack (técnico)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Confirmación Enviada (Texto)": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traer Datos Actuales HITL": {
+      "main": [
+        [
+          {
+            "node": "¿Ya Requiere Revisión Humana?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Ya Requiere Revisión Humana?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Marcar Revisión Humana Requerida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Revisión Humana Requerida": {
+      "main": [
+        [
+          {
+            "node": "HITL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "3b8ace7e-a6f3-4a39-aae8-f6b469a0ada9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b4c1555027b3a875dc199c794ed32bb83e38278e384970b37cb3ddde740cae2f"
+  },
+  "nodeGroups": [],
+  "id": "No4VAAwVjWdpwxQY",
+  "tags": []
+}
