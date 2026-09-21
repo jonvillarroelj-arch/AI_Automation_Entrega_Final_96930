@@ -11,9 +11,9 @@ Entrega Final — curso AI Automation, Comisión #96930.
 
 ## Archivos
 
-- `Diagrama_Arquitectura.pdf` — informe completo (9 páginas): contexto, mapa de arquitectura, estructuras de datos, optimización de costos, seguridad y resiliencia, dashboard de control.
-- `workflow.json` — lógica completa del flujo, exportada de n8n (109 nodos, 174 conexiones).
-- `screenshots/` — evidencia del flujo funcionando en la práctica.
+- [`Diagrama_Arquitectura.pdf`](Diagrama_Arquitectura.pdf) — informe completo (9 páginas): contexto, mapa de arquitectura, estructuras de datos, optimización de costos, seguridad y resiliencia, dashboard de control.
+- [`workflow.json`](workflow.json) — lógica completa del flujo, exportada de n8n (109 nodos, 174 conexiones).
+- [`screenshots/`]() — evidencia del flujo funcionando en la práctica.
 
 ## Evidencia del flujo en funcionamiento
 
