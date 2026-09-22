@@ -16,8 +16,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.7,
       "position": [
-        8032,
-        -416
+        2768,
+        112
       ],
       "id": "04332aa4-3f50-42ea-8b85-0c2ff7efccfd",
       "name": "Avisar por Slack (técnico)",
@@ -41,8 +41,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        8704,
-        -496
+        3104,
+        176
       ],
       "id": "e29d5199-20c7-4672-96a9-9793f137a07d",
       "name": "Notificar falla Slack",
@@ -115,8 +115,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        6336,
-        6464
+        -1760,
+        448
       ],
       "id": "4ff69442-8063-4ed8-81a4-a46132c12d62",
       "name": "¿Qué decidió?"
@@ -130,8 +130,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        7360,
-        208
+        1664,
+        -1088
       ],
       "id": "7e0ff7be-8d83-4cc0-bece-1bc1d973e2c8",
       "name": "Confirmar Pedido",
@@ -154,8 +154,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        7360,
-        -944
+        2320,
+        -432
       ],
       "id": "f32dfa76-ef02-401c-bc16-b854efd516fe",
       "name": "Cancelar Pedido",
@@ -171,7 +171,7 @@
     },
     {
       "parameters": {
-        "sendTo": "jon.villarroel.j@gmail.com",
+        "sendTo": "=jon.villarroel.j@gmail.com",
         "subject": "=🔔 Revisión Humana Requerida - Pedido {{ $('Traer Datos Actuales HITL').item.json.property_comprador }}",
         "message": "=<h2>Revisión Humana Requerida</h2>\n<p><strong>Comprador:</strong> {{ $('Traer Datos Actuales HITL').item.json.property_comprador }}</p>\n<p><strong>Producto:</strong> {{ $('Traer Datos Actuales HITL').item.json.property_producto }}</p>\n<p><strong>Dirección:</strong> {{ $('Traer Datos Actuales HITL').item.json.property_dirección }}</p>\n<p><strong>Motivo:</strong> Se requiere revisión manual — la dirección no pudo validarse automáticamente o la corrección del cliente no fue clara.</p>\n\n<p>\n  <a href=\"https://jons-macbook-pro.tailc0f6c8.ts.net/webhook/HITL-Decision?decision=aprobar&pedido_id={{ $json.id }}\" style=\"padding:10px 20px;background:#2ecc71;color:white;text-decoration:none;border-radius:5px;\">✅ Aprobar</a>\n  &nbsp;&nbsp;\n  <a href=\"https://jons-macbook-pro.tailc0f6c8.ts.net/webhook/HITL-Decision?decision=rechazar&pedido_id={{ $json.id }}\" style=\"padding:10px 20px;background:#e74c3c;color:white;text-decoration:none;border-radius:5px;\">❌ Rechazar</a>\n</p>",
         "options": {}
@@ -179,8 +179,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        8480,
-        -704
+        3120,
+        -416
       ],
       "id": "57066239-812e-42ca-971f-1ccc70572d43",
       "name": "HITL",
@@ -203,8 +203,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        6048,
-        6560
+        -1984,
+        544
       ],
       "id": "a9379e65-e690-43bf-b9be-20b9c533cdee",
       "name": "Decisión HITL",
@@ -255,8 +255,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        8256,
-        -560
+        2944,
+        32
       ],
       "id": "dd3200e0-f5a5-42ff-994a-63de62bc89e2",
       "name": "Registrar Log",
@@ -289,8 +289,8 @@
       "type": "n8n-nodes-base.notionTrigger",
       "typeVersion": 1.1,
       "position": [
-        -768,
-        -1024
+        -2032,
+        -112
       ],
       "id": "5e21392e-7340-4935-b979-1333306d3c03",
       "name": "Pedido Nuevo Recibido",
@@ -315,8 +315,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        -96,
-        3424
+        -1616,
+        -32
       ],
       "id": "61a239d3-b854-4efd-bc28-3f1e7b0d9e76",
       "name": "Validar Dirección",
@@ -340,8 +340,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        128,
-        928
+        -1248,
+        -656
       ],
       "id": "fccb462f-f7c4-4329-845f-32eb5e617e37",
       "name": "Combinar Dirección e Historial"
@@ -373,8 +373,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        -96,
-        848
+        -1456,
+        -592
       ],
       "id": "0b14b5b1-ca53-424a-bd78-7d41c3c75249",
       "name": "Consultar Historial Comprador",
@@ -409,8 +409,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.3,
       "position": [
-        352,
-        928
+        -752,
+        -928
       ],
       "id": "97a36f0b-a53a-46d9-bc51-07ebb0c05206",
       "name": "Evaluar Riesgo - Motor de Decisión",
@@ -483,8 +483,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        928,
-        992
+        -288,
+        -1120
       ],
       "id": "797a7eab-f97f-42eb-86c7-a5082659c3bb",
       "name": "¿Continuar o Cancelar?"
@@ -507,8 +507,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1152,
-        464
+        -48,
+        -1136
       ],
       "id": "6d7b0e97-0971-4448-9e47-675694b9a466",
       "name": "Armar Mensaje de Confirmación"
@@ -545,8 +545,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1376,
-        464
+        144,
+        -1152
       ],
       "id": "5ee1b089-361f-4011-89fd-0779402af01f",
       "name": "Enviar Confirmación",
@@ -578,8 +578,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        7136,
-        2864
+        2304,
+        1088
       ],
       "id": "df123e06-bca1-44ff-99f9-f5664da5c44a",
       "name": "Armar Mensaje de Cancelación (Mal Historial)"
@@ -593,8 +593,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        7360,
-        2864
+        2528,
+        1088
       ],
       "id": "b9ec56ae-d854-46ec-ae5c-aacfcae65b75",
       "name": "Notificar Cancelación (Mal Historial)",
@@ -615,8 +615,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1824,
-        608
+        544,
+        -1248
       ],
       "id": "d3e8bbbd-5b72-43bd-8ab0-f6abd36c409e",
       "name": "Esperar 1h",
@@ -636,8 +636,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        2048,
-        608
+        704,
+        -1248
       ],
       "id": "10d41995-0a2c-438e-9725-761e56b71c8c",
       "name": "Traer Estado Actualizado (1h)",
@@ -712,8 +712,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        2272,
-        960
+        592,
+        -992
       ],
       "id": "0515303f-d2d5-47b7-a7b2-9d33a85f48a9",
       "name": "¿Qué Respondió el Cliente? (1h)"
@@ -731,14 +731,14 @@
             {
               "id": "37c69acb-e5f4-4d4a-a2c7-3016dddb756d",
               "leftValue": "={{ $json.property_dirección_validada }}",
-              "rightValue": "\"TRUE\"",
+              "rightValue": "TRUE",
               "operator": {
                 "type": "string",
                 "operation": "equals"
               }
             },
             {
-              "id": "7b65c986-910e-49de-8bc6-f2cdf7e6df97",
+              "id": "c3e558fc-7775-4d22-b3fd-4126ae5e2cf2",
               "leftValue": "={{ $json.result.verdict.addressComplete }}",
               "rightValue": true,
               "operator": {
@@ -754,8 +754,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        6336,
-        48
+        832,
+        -992
       ],
       "id": "1e0fb0f7-7cc2-400f-b6b4-8b385fcdd1cd",
       "name": "¿Dirección Válida?"
@@ -822,8 +822,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        3616,
-        2384
+        1280,
+        560
       ],
       "id": "019ed76b-8c02-4cf6-a2e3-42cb2d60d216",
       "name": "¿Qué Respondió el Cliente? (7h)"
@@ -835,8 +835,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        704,
-        992
+        -448,
+        -1120
       ],
       "id": "33d72e66-8885-4aa1-8327-8fbcfa0d7fc6",
       "name": "Interpretar Desición de Riesgo"
@@ -852,8 +852,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.5,
       "position": [
-        4288,
-        4464
+        -2000,
+        208
       ],
       "id": "2b8984df-f133-48e5-91f9-1ed42a62feba",
       "name": "Botón Presionado",
@@ -872,8 +872,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4512,
-        4464
+        -1776,
+        208
       ],
       "id": "639f8865-ef0d-4aa3-9f53-8fc9e92e4334",
       "name": "Interpretar Evento Telegram"
@@ -906,8 +906,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        4736,
-        4464
+        -1552,
+        208
       ],
       "id": "6c433697-f902-40b2-a265-ba70943e26dd",
       "name": "¿Vino por Botón o Texto?"
@@ -945,8 +945,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        4960,
-        4720
+        -1344,
+        320
       ],
       "id": "4ea9ebc1-8810-4f6f-9179-1d5fcd7f318a",
       "name": "Buscar Pedido por Chat ID",
@@ -973,8 +973,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        6336,
-        3824
+        -1248,
+        128
       ],
       "id": "db067f88-4bbf-4688-b8c7-5ca953f643e0",
       "name": "Buscar Pedido por ID",
@@ -1017,8 +1017,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        6848,
-        4352
+        -896,
+        336
       ],
       "id": "3c7b0840-bfeb-40f1-b423-24880732fb12",
       "name": "Actualizar Pedido Texto",
@@ -1059,8 +1059,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        5248,
-        4784
+        -1120,
+        384
       ],
       "id": "0156f948-d860-4f62-b48d-36e5e06d33dc",
       "name": "¿Se Encontró el Pedido?"
@@ -1092,8 +1092,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        5536,
-        4864
+        -896,
+        480
       ],
       "id": "b97e2923-94ff-43dd-9e5f-b1960ef2020b",
       "name": "Buscar Pedido por Chat ID (Amplio)",
@@ -1134,8 +1134,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        5760,
-        4928
+        -672,
+        560
       ],
       "id": "273f75a5-6c8f-44e6-ba7c-cb6bf307e3ef",
       "name": "¿Se Encontró Pedido Amplio?"
@@ -1150,8 +1150,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        7584,
-        5312
+        352,
+        1024
       ],
       "id": "70ccec74-a20d-4283-8d04-de24f323acc8",
       "name": "Notificar Mensaje Sin Pedido Asociado",
@@ -1186,8 +1186,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.3,
       "position": [
-        5984,
-        4832
+        -496,
+        496
       ],
       "id": "6a7bd855-5441-4875-8357-f8db18983ba4",
       "name": "Clasificar Intención del Mensaje",
@@ -1207,8 +1207,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6336,
-        4928
+        -304,
+        864
       ],
       "id": "7f9c251a-f1aa-4caa-9ae9-0c5cf4ce8c55",
       "name": "Interpretar Intención"
@@ -1298,8 +1298,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        7632,
-        -1280
+        -80,
+        848
       ],
       "id": "2f038443-9408-466b-8dc2-5d8089817547",
       "name": "¿Cuál es la Intención?"
@@ -1318,6 +1318,9 @@
             {
               "key": "=Estado|select",
               "selectValue": "=Confirmó"
+            },
+            {
+              "key": "=Requiere Revisión Humana|checkbox"
             }
           ]
         },
@@ -1326,8 +1329,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        6848,
-        4976
+        1344,
+        816
       ],
       "id": "9b7a3f5b-8e39-4170-9fed-c56d15fbb31f",
       "name": "Actualizar Pedido (Confirmación Detectada)",
@@ -1368,8 +1371,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        6848,
-        3904
+        -704,
+        48
       ],
       "id": "5da546cc-ecab-474a-9f70-c87cbdb1da7f",
       "name": "¿Confirmar o Modificar?"
@@ -1381,7 +1384,7 @@
             {
               "id": "ae4963df-2f6c-4952-aebf-a05278beb4cf",
               "name": "mensaje",
-              "value": "=¡Gracias {{ $('Buscar Pedido por ID').item.json.property_comprador }}! Confirmamos tu pedido ✅\n\n📦 {{ $('Buscar Pedido por ID').item.json.property_producto }}\n💰 ${{ $('Buscar Pedido por ID').item.json.property_precio.toLocaleString('es-CL') }}\n📍 Dirección de entrega: {{ $('Buscar Pedido por ID').item.json.property_dirección }}\n🗓️ Fecha de confirmación: {{ $now.format('dd/MM/yyyy HH:mm') }}\n\nTu pedido estará listo para despacho en un plazo de 3 a 5 días hábiles. Apenas generemos la guía de envío, te la enviaremos por acá para que puedas hacer seguimiento de tu pedido.\n\n¡Gracias por tu compra! 🙌",
+              "value": "=¡Gracias {{ $('Buscar Pedido por ID').item.json.property_comprador }}! Recibimos tu confirmación ✅\n\n📦 {{ $('Buscar Pedido por ID').item.json.property_producto }}\n💰 ${{ $('Buscar Pedido por ID').item.json.property_precio.toLocaleString('es-CL') }}\n\nEstamos verificando los datos de tu envío. Te avisamos por acá apenas esté todo listo para despacho.\n\n¡Gracias por tu compra! 🙌",
               "type": "string"
             }
           ]
@@ -1392,8 +1395,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        7136,
-        3808
+        -416,
+        0
       ],
       "id": "878df88a-59d4-4f01-87a9-61f12f1ecf4a",
       "name": "Armar Mensaje de Confirmación (Inmediato)"
@@ -1407,8 +1410,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        7360,
-        3808
+        -160,
+        0
       ],
       "id": "13d478d0-63d8-4ec7-a6ac-1566393a65c5",
       "name": "Enviar Confirmación Inmediata (Botón)",
@@ -1424,48 +1427,12 @@
     },
     {
       "parameters": {
-        "resource": "databasePage",
-        "operation": "update",
-        "pageId": {
-          "__rl": true,
-          "value": "={{ $('Buscar Pedido por ID').item.json.id }}",
-          "mode": "id"
-        },
-        "propertiesUi": {
-          "propertyValues": [
-            {
-              "key": "=Confirmación Enviada|checkbox",
-              "checkboxValue": true
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.notion",
-      "typeVersion": 3,
-      "position": [
-        7584,
-        3872
-      ],
-      "id": "f3e5abb0-1fb2-47ab-ae07-6e70868da4b0",
-      "name": "Marcar Confirmación Enviada (Botón)",
-      "retryOnFail": true,
-      "credentials": {
-        "notionApi": {
-          "id": "x3ptNIcrvQ0HOjlf",
-          "name": "Notion account"
-        }
-      },
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
               "id": "ae4963df-2f6c-4952-aebf-a05278beb4cf",
               "name": "mensaje",
-              "value": "=¡Gracias {{ $('Buscar Pedido por Chat ID (Amplio)').item.json.property_comprador }}! Confirmamos tu pedido ✅\n\n📦 {{ $('Buscar Pedido por Chat ID (Amplio)').item.json.property_producto }}\n💰 ${{ $('Buscar Pedido por Chat ID (Amplio)').item.json.property_precio.toLocaleString('es-CL') }}\n📍 Dirección de entrega: {{ $('Buscar Pedido por Chat ID (Amplio)').item.json.property_dirección }}\n🗓️ Fecha de confirmación: {{ $now.format('dd/MM/yyyy HH:mm') }}\n\nTu pedido estará listo para despacho en un plazo de 3 a 5 días hábiles. Apenas generemos la guía de envío, te la enviaremos por acá para que puedas hacer seguimiento de tu pedido.\n\n¡Gracias por tu compra! 🙌",
+              "value": "=¡Gracias {{ $('Buscar Pedido por Chat ID (Amplio)').item.json.property_comprador }}! Recibimos tu confirmación ✅\n\n📦 {{ $('Buscar Pedido por Chat ID (Amplio)').item.json.property_producto }}\n💰 ${{ $('Buscar Pedido por Chat ID (Amplio)').item.json.property_precio.toLocaleString('es-CL') }}\n\nEstamos verificando los datos de tu envío. Te avisamos por acá apenas esté todo listo para despacho.\n\n¡Gracias por tu compra! 🙌",
               "type": "string"
             }
           ]
@@ -1476,8 +1443,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        7136,
-        5056
+        1632,
+        880
       ],
       "id": "395c673c-99ce-40e3-886f-89e127f86034",
       "name": "Armar Mensaje de Confirmación (Inmediato Texto)"
@@ -1491,8 +1458,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        7360,
-        5056
+        1856,
+        880
       ],
       "id": "b6937427-cbde-473b-944a-441cc86997f0",
       "name": "Enviar Confirmación Inmediata (Texto)",
@@ -1508,51 +1475,15 @@
     },
     {
       "parameters": {
-        "resource": "databasePage",
-        "operation": "update",
-        "pageId": {
-          "__rl": true,
-          "value": "={{ $('Buscar Pedido por Chat ID (Amplio)').item.json.id }}",
-          "mode": "id"
-        },
-        "propertiesUi": {
-          "propertyValues": [
-            {
-              "key": "=Confirmación Enviada|checkbox",
-              "checkboxValue": true
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.notion",
-      "typeVersion": 3,
-      "position": [
-        7584,
-        5120
-      ],
-      "id": "cec07d18-7136-4e56-9fe3-0733edc07223",
-      "name": "Marcar Confirmación Enviada (Texto)",
-      "retryOnFail": true,
-      "credentials": {
-        "notionApi": {
-          "id": "x3ptNIcrvQ0HOjlf",
-          "name": "Notion account"
-        }
-      },
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
         "chatId": "={{ $('Interpretar Evento Telegram').item.json.chat_id }}",
-        "text": "=¡Recibido! 📝Cuéntanos cuál es la dirección correcta para tu entrega y la validamos enseguida.",
+        "text": "=📝 Cuéntanos cuál es la dirección correcta para tu entrega y la validamos enseguida👇",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        7376,
-        4048
+        -464,
+        208
       ],
       "id": "d56b635e-005b-4b52-a441-78673473279d",
       "name": "Enviar Ack Modificar Dirección",
@@ -1593,8 +1524,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2720,
-        1184
+        816,
+        -592
       ],
       "id": "de398941-5cc9-4380-9783-4b5a5ca1ac89",
       "name": "¿Ya se Recibió la Dirección Corregida? (1h)"
@@ -1617,8 +1548,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        2944,
-        1264
+        -1120,
+        -272
       ],
       "id": "2118e5b2-70a0-4a1a-bdf4-b48163c6ca39",
       "name": "Armar Recordatorio Dirección (1/2)"
@@ -1630,8 +1561,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        3392,
-        1312
+        -672,
+        -272
       ],
       "id": "c1f74132-366f-42f2-9e6a-1e12f8d8b2d1",
       "name": "Esperar Dirección (hasta 7h)",
@@ -1664,8 +1595,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3840,
-        1376
+        -224,
+        -256
       ],
       "id": "5f61dba9-8007-4598-87f8-1cfd5b960050",
       "name": "¿Ya se Recibió la Dirección Corregida? (7h)"
@@ -1688,8 +1619,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        4064,
-        1456
+        0,
+        -176
       ],
       "id": "1c4b2402-cc3a-4b8a-a455-1b56fd03d4c3",
       "name": "Armar Recordatorio Dirección (2/2)"
@@ -1703,8 +1634,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        3168,
-        1264
+        -896,
+        -272
       ],
       "id": "477609e6-5352-4cf8-9442-83256317e3f1",
       "name": "Enviar Recordatorio Dirección (1/2)",
@@ -1727,8 +1658,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        4288,
-        1456
+        288,
+        -176
       ],
       "id": "40a14bcb-4c40-4079-8a97-b78b927f9e54",
       "name": "Enviar Recordatorio Dirección (2/2)",
@@ -1749,8 +1680,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        4512,
-        1520
+        576,
+        -112
       ],
       "id": "26c3807e-c42c-4c26-a880-405d6846af76",
       "name": "Esperar Dirección (hasta 24h)",
@@ -1783,8 +1714,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        4960,
-        1600
+        1024,
+        -32
       ],
       "id": "245d89e1-398e-4c9a-9d4f-2417499d6b85",
       "name": "¿Ya se Recibió la Dirección Corregida? (24h)"
@@ -1807,6 +1738,10 @@
             {
               "key": "=Dirección Validada|select",
               "selectValue": "=TRUE"
+            },
+            {
+              "key": "=Requiere Revisión Humana|checkbox",
+              "checkboxValue": "={{ false }}"
             }
           ]
         },
@@ -1815,8 +1750,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        6560,
-        128
+        1024,
+        -1056
       ],
       "id": "19bc0b50-7a74-4731-bd50-83c758e5efd9",
       "name": "Registrar Confirmación del Pedido",
@@ -1856,8 +1791,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        6848,
-        208
+        1248,
+        -1120
       ],
       "id": "9dca329c-39e4-4bd4-9ea8-d1ff2972f930",
       "name": "¿Confirmación Ya Enviada?"
@@ -1869,7 +1804,7 @@
             {
               "id": "67e2e51e-6f9e-443d-8971-baec99f68f2e",
               "name": "mensaje",
-              "value": "=¡Gracias {{ $json.property_comprador }}! Confirmamos tu pedido ✅\n\n📦 {{ $json.property_producto }}\n💰 ${{ $json.property_precio.toLocaleString('es-CL') }}\n📍 Dirección de entrega: {{ $json.property_dirección }}\n🗓️ Fecha de confirmación: {{ $now.format('dd/MM/yyyy HH:mm') }}\n\nTu pedido estará listo para despacho en un plazo de 3 a 5 días hábiles. Apenas generemos la guía de envío, te la enviaremos por acá para que puedas hacer seguimiento de tu pedido.\n\n¡Gracias por tu compra! 🙌",
+              "value": "=Buenas noticias {{ $json.property_comprador }}! Confirmamos tu pedido ✅\n\n📦 {{ $json.property_producto }}\n💰 ${{ $json.property_precio.toLocaleString('es-CL') }}\n📍 Dirección de entrega: {{ $json.property_dirección }}\n🗓️ Fecha de confirmación: {{ $now.format('dd/MM/yyyy HH:mm') }}\n\nTu pedido estará listo para despacho en un plazo de 3 a 5 días hábiles. Apenas generemos la guía de envío, te la enviaremos por acá para que puedas hacer seguimiento de tu pedido.\n\n¡Gracias por tu compra! 🙌",
               "type": "string"
             }
           ]
@@ -1880,8 +1815,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        7136,
-        208
+        1488,
+        -1104
       ],
       "id": "d3beb89a-be6c-4c37-b127-445f5b293b78",
       "name": "Armar Mensaje de Confirmación (Validación Dirección)"
@@ -1892,7 +1827,7 @@
         "operation": "update",
         "pageId": {
           "__rl": true,
-          "value": "={{ $('Pedido Nuevo Recibido').item.json.id }}",
+          "value": "={{ $('Armar Mensaje de Confirmación (Validación Dirección)').item.json.id }}",
           "mode": "id"
         },
         "propertiesUi": {
@@ -1908,8 +1843,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        7584,
-        272
+        1856,
+        -1088
       ],
       "id": "93740968-c87c-44d5-84e0-1e65f26a9457",
       "name": "Marcar Confirmación Enviada (Validación Dirección)",
@@ -1940,6 +1875,9 @@
             {
               "key": "=Motivo Cancelación|rich_text",
               "textContent": "={{ $json.motivo_cancelacion }}"
+            },
+            {
+              "key": "=Requiere Revisión Humana|checkbox"
             }
           ]
         },
@@ -1948,8 +1886,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        6848,
-        -1024
+        1872,
+        -336
       ],
       "id": "670b97f0-fdae-4464-9201-6aa8b5caea8b",
       "name": "Registrar Cancelación del Pedido",
@@ -1980,8 +1918,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        7136,
-        -944
+        2096,
+        -432
       ],
       "id": "ef8a60e8-f4f2-4f7b-9832-b218743b4002",
       "name": "Armar Mensaje de Cancelación (Timeout/Rechazo)"
@@ -2007,8 +1945,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.3,
       "position": [
-        5184,
-        592
+        1056,
+        -576
       ],
       "id": "0e02f52d-3c8a-420b-92dd-4bddbfb794df",
       "name": "Interpretar Corrección de Dirección",
@@ -2028,8 +1966,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5536,
-        672
+        1152,
+        -384
       ],
       "id": "1be9b6a4-69f6-4a04-bd70-1e150214bf20",
       "name": "Interpretar Corrección Detectada"
@@ -2119,8 +2057,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        6864,
-        -1456
+        1360,
+        -384
       ],
       "id": "34686e7a-50fc-48d3-be3d-d2e3c75807d6",
       "name": "¿Cómo Quedó la Dirección?"
@@ -2139,8 +2077,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        6048,
-        784
+        1584,
+        -800
       ],
       "id": "e7b2e630-c111-4ed4-a4e1-95b655163d58",
       "name": "Revalidar Dirección Corregida",
@@ -2171,8 +2109,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        2496,
-        2144
+        112,
+        672
       ],
       "id": "4c1afc31-0d73-4b0b-a84f-086233fcb1aa",
       "name": "Armar Recordatorio (1/2)"
@@ -2209,8 +2147,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2720,
-        2144
+        384,
+        352
       ],
       "id": "7150d192-7dab-48cb-a6d4-a460146e0b3f",
       "name": "Enviar Recordatorio (1/2)",
@@ -2231,8 +2169,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        3168,
-        2304
+        832,
+        496
       ],
       "id": "5dad8b48-d17d-4e39-b86b-86ef8d525454",
       "name": "Esperar (hasta 7h)",
@@ -2259,8 +2197,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        2944,
-        2240
+        608,
+        432
       ],
       "id": "7d031475-bc92-48cc-863e-7c03e83273a2",
       "name": "Marcar Recordatorio Enviado (1/2)",
@@ -2295,8 +2233,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        5248,
-        2528
+        2080,
+        480
       ],
       "id": "49a97c47-06c0-46ad-89ea-88d5fcb77526",
       "name": "Marcar Recordatorio Enviado (2/2)",
@@ -2323,8 +2261,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        3616,
-        1312
+        -448,
+        -272
       ],
       "id": "65508112-73e8-47e1-a105-32e112a7d6f6",
       "name": "Traer Estado Actualizado D (7h)",
@@ -2351,8 +2289,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        4736,
-        1520
+        800,
+        -112
       ],
       "id": "bca26b50-1be4-4e32-9b85-f3106ba9be48",
       "name": "Traer Estado Actualizado D (24h)",
@@ -2379,8 +2317,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        3392,
-        2304
+        1056,
+        496
       ],
       "id": "2e7e062d-7f06-4ba5-842e-81b04e727627",
       "name": "Traer Estado Actualizado C (7h)",
@@ -2411,8 +2349,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        4736,
-        2464
+        1568,
+        416
       ],
       "id": "9385d844-7e31-41fb-95f5-9d0fde184a02",
       "name": "Armar Recordatorio (2/2)"
@@ -2449,8 +2387,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        4960,
-        2464
+        1792,
+        416
       ],
       "id": "e63846e6-1dd9-4e0e-9a21-62a3661905d9",
       "name": "Enviar Recordatorio (2/2)",
@@ -2471,8 +2409,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        5536,
-        2608
+        2368,
+        560
       ],
       "id": "edc90a83-7330-46d5-ab22-908bf9cf03cc",
       "name": "Esperar Final (hasta 24h)",
@@ -2492,8 +2430,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        5760,
-        2608
+        2592,
+        560
       ],
       "id": "bb867c78-3d4e-4c53-a597-0d154bf3aecf",
       "name": "Traer Estado Actualizado C (24h)",
@@ -2534,8 +2472,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        6048,
-        2672
+        2816,
+        624
       ],
       "id": "18f0e880-bfef-42c9-88cc-8a006164feb0",
       "name": "¿Confirmó o se Cancela? (Final)?"
@@ -2553,8 +2491,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.4,
       "position": [
-        5536,
-        6016
+        -1968,
+        1040
       ],
       "id": "921dd240-b596-4622-8035-805fb2aaa7f4",
       "name": "Cierre de Día Programado"
@@ -2592,8 +2530,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        5760,
-        6016
+        -1744,
+        1040
       ],
       "id": "4ee5658d-4ee9-4068-a709-c48bfa4be466",
       "name": "Traer Pedidos del Día",
@@ -2615,8 +2553,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        7360,
-        5824
+        -800,
+        1056
       ],
       "id": "13df1547-49df-4d7d-9ba3-430822b5ba4b",
       "name": "Combinar KPI Negocio y Sistema"
@@ -2654,8 +2592,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        6336,
-        6256
+        -1360,
+        1280
       ],
       "id": "3576c0a5-e68c-4991-b9f6-43913ca720eb",
       "name": "Traer Errores del Día",
@@ -2676,8 +2614,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7136,
-        6320
+        -960,
+        1472
       ],
       "id": "d0c99c83-2c9f-445b-87d8-37bab899a675",
       "name": "Agrupar Errores por Sistema"
@@ -2758,8 +2696,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        7584,
-        5728
+        -592,
+        928
       ],
       "id": "ff9bfc21-de2a-4d24-ac20-7effa0d398a5",
       "name": "Guardar Reporte en Dashboard",
@@ -2782,8 +2720,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        7584,
-        5920
+        -592,
+        1120
       ],
       "id": "4b10362d-1c37-42bc-9fb5-78b6c2848482",
       "name": "Enviar Reporte por Correo",
@@ -2810,11 +2748,10 @@
             {
               "id": "98fe899a-86b8-4b68-bc00-8647aa8c402f",
               "leftValue": "={{ $json.datos_completos }}",
-              "rightValue": "true",
+              "rightValue": true,
               "operator": {
                 "type": "boolean",
-                "operation": "true",
-                "singleValue": true
+                "operation": "equals"
               }
             }
           ],
@@ -2825,8 +2762,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -320,
-        2736
+        -1680,
+        -256
       ],
       "id": "57d7ea68-293e-4e6c-bff5-8dc5f1b2605a",
       "name": "¿Datos Completos?"
@@ -2857,8 +2794,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        7584,
-        3136
+        -1456,
+        -384
       ],
       "id": "37a886e7-e7d4-41c7-bc64-64c260d3dd5b",
       "name": "Registrar Pedido Incompleto",
@@ -2898,8 +2835,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        6560,
-        3904
+        -944,
+        64
       ],
       "id": "5be29351-515d-433b-81d3-26379adbbdb7",
       "name": "Actualizar Pedido Botón",
@@ -2916,22 +2853,13 @@
       "parameters": {
         "respondWith": "text",
         "responseBody": "<h3>Decisión registrada ✅</h3>\n<p>Ya puedes cerrar esta pestaña.</p>",
-        "options": {
-          "responseHeaders": {
-            "entries": [
-              {
-                "name": "Content-Type",
-                "value": "text/html"
-              }
-            ]
-          }
-        }
+        "options": {}
       },
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        6336,
-        6656
+        -1552,
+        704
       ],
       "id": "d46003f3-a15d-49e0-b92b-dd3bf35f9a6e",
       "name": "Respuesta a la decisión"
@@ -2958,8 +2886,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        7568,
-        -816
+        2544,
+        -544
       ],
       "id": "283daa56-c152-46d2-97d4-88a531dbaabe",
       "name": "Marcar Cancelación Enviada TimeOut",
@@ -2979,8 +2907,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -544,
-        -1024
+        -1824,
+        -112
       ],
       "id": "b6fad956-53a0-404b-8b45-175815d786c3",
       "name": "Validar Datos Requeridos",
@@ -3002,7 +2930,7 @@
           "propertyValues": [
             {
               "key": "=Dirección Validada|select",
-              "selectValue": "={{ $json.result.verdict.addressComplete ? 'TRUE' : 'FALSE' }} "
+              "selectValue": "={{ $json.result.verdict.addressComplete ? 'TRUE' : 'FALSE' }}"
             }
           ]
         },
@@ -3011,8 +2939,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        7584,
-        3472
+        -1440,
+        -48
       ],
       "id": "334275d6-ac30-450e-bf6a-6f01f0cde190",
       "name": "Marcar Dirección Validada",
@@ -3055,8 +2983,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        7584,
-        2944
+        2752,
+        1168
       ],
       "id": "02cc1717-8b9e-4224-9484-bdd68acfd5b3",
       "name": "Registrar Cancelación del Pedido (Mal Historial)",
@@ -3093,8 +3021,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        6560,
-        6544
+        -1536,
+        512
       ],
       "id": "bda4594f-0e4c-45bf-a1e9-4e57d54626d4",
       "name": "Definir Motivo (Rechazo HITL)"
@@ -3117,8 +3045,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        6560,
-        -1024
+        1408,
+        -144
       ],
       "id": "34a972a2-d206-498e-86ff-5cc3c685ec71",
       "name": "Definir Motivo (Error Validación)"
@@ -3141,8 +3069,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        6560,
-        2720
+        2512,
+        864
       ],
       "id": "da156d30-6d94-4433-9d30-8541f9f0698c",
       "name": "Definir Motivo (Timeout Confirmación)"
@@ -3165,8 +3093,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        6560,
-        1648
+        1328,
+        48
       ],
       "id": "f279bded-1bbc-4e32-b383-e4f24230cb85",
       "name": "Definir Motivo (Timeout Dirección)"
@@ -3193,8 +3121,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        1600,
-        544
+        368,
+        -1200
       ],
       "id": "fe111450-d340-4e1b-9539-bec5f1b4197e",
       "name": "Marcar Primera Reacción",
@@ -3214,8 +3142,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7136,
-        5824
+        -1152,
+        864
       ],
       "id": "c4844b41-77bb-420b-807b-d62d7fa7a3b6",
       "name": "Parsear KPI Negocio"
@@ -3227,15 +3155,15 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6048,
-        6256
+        -1584,
+        1312
       ],
       "id": "b06664cc-5881-48ed-82dc-5f7129563dee",
       "name": "Calcular Tiempo de Reacción"
     },
     {
       "parameters": {
-        "url": "=https://jons-macbook-pro.tailc0f6c8.ts.net/api/v1/executions?workflowId={{ $workflow.id }}&limit=15&includeData=true",
+        "url": "=https://jons-macbook-pro.tailc0f6c8.ts.net/api/v1/executions?workflowId={{ $workflow.id }}&limit=5&includeData=true",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "options": {}
@@ -3243,8 +3171,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        6560,
-        6320
+        -1152,
+        1120
       ],
       "id": "56e1ef7f-7e25-4c25-a2e9-a4202236f094",
       "name": "Consultar Ejecuciones del Día",
@@ -3265,8 +3193,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6848,
-        6400
+        -976,
+        1248
       ],
       "id": "262272d7-a1a6-487b-a027-59922e97bc25",
       "name": "Calcular Tiempos y Reintentos"
@@ -3279,8 +3207,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        7360,
-        6464
+        -768,
+        1328
       ],
       "id": "b1dad1d2-c891-4abe-bc75-fc33a4837e7c",
       "name": "Separar Filas de Tiempos"
@@ -3317,8 +3245,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        7584,
-        6464
+        -592,
+        1344
       ],
       "id": "e07ce327-7d0d-418f-a18d-a71b1bf5c27b",
       "name": "Guardar Tiempos por Integración",
@@ -3353,8 +3281,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.3,
       "position": [
-        6784,
-        5744
+        -1520,
+        928
       ],
       "id": "06de1936-a385-445a-831b-14666be1866b",
       "name": "Calcular KPI Negocio",
@@ -3375,8 +3303,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7808,
-        -416
+        2592,
+        112
       ],
       "id": "af6f5fc9-7133-4ed5-a2f1-67f5c8de043c",
       "name": "Extraer Detalle del Error"
@@ -3395,8 +3323,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        7840,
-        -832
+        2704,
+        -192
       ],
       "id": "91840437-1996-484b-9efa-0ac7ad601270",
       "name": "Traer Datos Actuales HITL",
@@ -3436,8 +3364,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        8256,
-        -880
+        2848,
+        -400
       ],
       "id": "eb031666-56e8-4e2c-9ad0-e42464e641ed",
       "name": "¿Ya Requiere Revisión Humana?"
@@ -3464,8 +3392,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        8688,
-        -1056
+        2976,
+        -224
       ],
       "id": "d7767417-7e60-4434-b84b-589952c1bf5c",
       "name": "Marcar Revisión Humana Requerida",
@@ -3474,6 +3402,174 @@
         "notionApi": {
           "id": "x3ptNIcrvQ0HOjlf",
           "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const componentes = $json.result?.address?.addressComponents || [];\nconst niveles = componentes.map(c => c.confirmationLevel);\n\nlet calidad;\nif (niveles.includes('UNCONFIRMED_AND_SUSPICIOUS')) {\n  calidad = 'No Valida';\n} else if (niveles.includes('UNCONFIRMED_BUT_PLAUSIBLE')) {\n  calidad = 'Revisar';\n} else {\n  calidad = 'Valida';\n}\n\nreturn [{ json: { ...$json, calidad_direccion: calidad } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1056,
+        -672
+      ],
+      "id": "c026f6b6-405a-4202-bba3-b1b93ce02c5b",
+      "name": "Clasificar Calidad de Dirección"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.calidad_direccion }}",
+                    "rightValue": "Valida",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b892744c-0fe9-4f79-85fa-58c0471ef896"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Valida"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "8d5c61ef-540f-4025-ba7a-6214f8ba6d67",
+                    "leftValue": "={{ $json.calidad_direccion }}",
+                    "rightValue": "Revisar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Revisar"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "34e0d56e-2f9f-4b0e-b546-974fc50ef6a4",
+                    "leftValue": "={{ $json.calidad_direccion }}",
+                    "rightValue": "No Valida",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "No Valida"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -896,
+        -704
+      ],
+      "id": "2f91c0ed-cb84-45e9-9f47-19a55da5adc1",
+      "name": "¿Calidad de Dirección?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "de236a87-c3ba-4b71-870f-ae7005b1ae82",
+              "name": "mensaje",
+              "value": "=Hola {{ $('Pedido Nuevo Recibido').item.json.Comprador }}, no pudimos confirmar tu dirección con exactitud 🤔\n\n📍 Nos llegó: {{ $('Pedido Nuevo Recibido').item.json.Dirección }}\n\nPuede que tenga un error de tipeo en el número o la calle. Presiona el botón para corregirla 👇",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -640,
+        -704
+      ],
+      "id": "c80b5398-85df-41b7-bd84-8a17545a1a32",
+      "name": "Armar Mensaje (Dirección Poco Clara)"
+    },
+    {
+      "parameters": {
+        "chatId": "8734954663",
+        "text": "={{ $json.mensaje }}",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Corregir Dirección",
+                    "additionalFields": {
+                      "callback_data": "==modificar_{{ $('Pedido Nuevo Recibido').item.json.id }}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -448,
+        -704
+      ],
+      "id": "31a69070-2a9a-4a5e-8734-911c203225bc",
+      "name": "Enviar Mensaje (Dirección Poco Clara)",
+      "webhookId": "36276109-eed3-4391-b287-0428530c433c",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rNFIu3EuzvCIaEhl",
+          "name": "Telegram account"
         }
       },
       "onError": "continueErrorOutput"
@@ -3563,12 +3659,12 @@
       "main": [
         [
           {
-            "node": "Respuesta a la decisión",
+            "node": "¿Qué decidió?",
             "type": "main",
             "index": 0
           },
           {
-            "node": "¿Qué decidió?",
+            "node": "Respuesta a la decisión",
             "type": "main",
             "index": 0
           }
@@ -3608,11 +3704,6 @@
       "main": [
         [
           {
-            "node": "Combinar Dirección e Historial",
-            "type": "main",
-            "index": 0
-          },
-          {
             "node": "Marcar Dirección Validada",
             "type": "main",
             "index": 0
@@ -3631,7 +3722,7 @@
       "main": [
         [
           {
-            "node": "Evaluar Riesgo - Motor de Decisión",
+            "node": "Clasificar Calidad de Dirección",
             "type": "main",
             "index": 0
           }
@@ -4109,24 +4200,6 @@
     },
     "Enviar Confirmación Inmediata (Botón)": {
       "main": [
-        [
-          {
-            "node": "Marcar Confirmación Enviada (Botón)",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Extraer Detalle del Error",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Marcar Confirmación Enviada (Botón)": {
-      "main": [
         [],
         [
           {
@@ -4150,13 +4223,7 @@
     },
     "Enviar Confirmación Inmediata (Texto)": {
       "main": [
-        [
-          {
-            "node": "Marcar Confirmación Enviada (Texto)",
-            "type": "main",
-            "index": 0
-          }
-        ],
+        [],
         [
           {
             "node": "Extraer Detalle del Error",
@@ -4882,7 +4949,13 @@
     },
     "Marcar Dirección Validada": {
       "main": [
-        [],
+        [
+          {
+            "node": "Combinar Dirección e Historial",
+            "type": "main",
+            "index": 0
+          }
+        ],
         [
           {
             "node": "Extraer Detalle del Error",
@@ -5074,18 +5147,6 @@
         ]
       ]
     },
-    "Marcar Confirmación Enviada (Texto)": {
-      "main": [
-        [],
-        [
-          {
-            "node": "Extraer Detalle del Error",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Traer Datos Actuales HITL": {
       "main": [
         [
@@ -5095,18 +5156,18 @@
             "index": 0
           }
         ],
-        [
-          {
-            "node": "Extraer Detalle del Error",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "¿Ya Requiere Revisión Humana?": {
       "main": [
-        [],
+        [
+          {
+            "node": "HITL",
+            "type": "main",
+            "index": 0
+          }
+        ],
         [
           {
             "node": "Marcar Revisión Humana Requerida",
@@ -5133,6 +5194,65 @@
           }
         ]
       ]
+    },
+    "Clasificar Calidad de Dirección": {
+      "main": [
+        [
+          {
+            "node": "¿Calidad de Dirección?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Calidad de Dirección?": {
+      "main": [
+        [
+          {
+            "node": "Evaluar Riesgo - Motor de Decisión",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Armar Mensaje (Dirección Poco Clara)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Traer Datos Actuales HITL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Mensaje (Dirección Poco Clara)": {
+      "main": [
+        [
+          {
+            "node": "Enviar Mensaje (Dirección Poco Clara)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Mensaje (Dirección Poco Clara)": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extraer Detalle del Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -5147,7 +5267,7 @@
     "callerPolicy": "workflowsFromSameOwner",
     "availableInMCP": false
   },
-  "versionId": "3b8ace7e-a6f3-4a39-aae8-f6b469a0ada9",
+  "versionId": "c203f614-6a15-40a1-b668-c510e7ec8945",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "b4c1555027b3a875dc199c794ed32bb83e38278e384970b37cb3ddde740cae2f"
