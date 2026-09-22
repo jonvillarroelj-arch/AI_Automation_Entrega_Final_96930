@@ -16,6 +16,7 @@ Entrega Final — curso AI Automation, Comisión #96930.
 
 ## Evidencia del flujo en funcionamiento
 
+- **Canvas General** 
 ![Canvas General](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/728457139bf66b38cb8f1045ee3afd62eba55fb6/1.%20Canvas%20General.png)
 ![Sección 1 - Verificación y Riesgo](screenshots/seccion1-verificacion-riesgo.png)
 ![Ejecución camino feliz](screenshots/execution-camino-feliz.png)
