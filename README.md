@@ -11,7 +11,7 @@ Entrega Final — curso AI Automation, Comisión #96930.
 
 - **Base de Datos en modo lectura (Notion):** https://app.notion.com/p/Verificaci-n-Automatizada-de-Pedidos-Contra-Entrega-3d8f420e9c5f80f0b65eda540c7c2da5?source=copy_link
 - **Dashboard de Control (panel público):** https://app.notion.com/p/Dashboard-de-Control-Resumen-3ddf420e9c5f80ceb114d69ed1b16a79
-
+- **Video Demo (3 min):** 
 
 ## Archivos
 
