@@ -114,7 +114,7 @@ El cliente nunca responde al mensaje inicial: el sistema manda un recordatorio a
 Un pedido llega a Notion sin uno de los datos obligatorios (dirección, teléfono o producto). El nodo "Validar Datos Requeridos" detecta el campo faltante y corta el flujo de inmediato, sin intentar validar la dirección ni evaluar el riesgo del comprador — el pedido se registra como "Cancelado - Datos Incompletos" directamente, sin llegar a molestar al cliente con un mensaje que de todas formas no se podría completar. Evidencia del Test de Estrés sobre la validación de entrada, el primer filtro del sistema antes de gastar ninguna llamada a Google, OpenAI o Telegram.
 
   
-![Cancelación del Pedido por Datos Incompletos](https://raw.githubusercontent.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/210447d68f8e329022cba3a1e74459bce7dc99de/9.%20Cancelacio%CC%81n%20Pedido%20por%20No%20Confirmacio%CC%81n%20del%20Comprador%20en%2024%20hrs.png)
+![Cancelación de Pedido por Datos Incompletos](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/c7ce62b0bdf814e9dc6297cf19921e68c6f4948b/10.%20Cancelacio%CC%81n%20de%20Pedido%20por%20Datos%20Incompletos.png)
 
 
 - **Dashboard de Control:**
