@@ -38,23 +38,23 @@ Entrega Final — curso AI Automation, Comisión #96930.
 
 - **Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (1/3)**
 
-![Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (1/3)](screenshots/hitl-correo-aprobar-rechazar.png)
+![Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (1/3)](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/210447d68f8e329022cba3a1e74459bce7dc99de/6.%20Confirmacio%CC%81n%20Pedido%20con%20HITL%20(Direccio%CC%81n%20Pedido%20Sospechosa)%20(1%3A3).png)
 
 - **Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (2/3)**
 
-![Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (2/3)](screenshots/hitl-correo-aprobar-rechazar.png)
+![Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (2/3)](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/210447d68f8e329022cba3a1e74459bce7dc99de/7.%20Confirmacio%CC%81n%20Pedido%20con%20HITL%20(Direccio%CC%81n%20Pedido%20Sospechosa)%20(2%3A3).png)
 
 - **Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (3/3)**
   
-![Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (3/3)](screenshots/hitl-correo-aprobar-rechazar.png)
+![Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (3/3)](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/210447d68f8e329022cba3a1e74459bce7dc99de/8.%20Cancelacio%CC%81n%20Pedido%20con%20HITL%20(Direccio%CC%81n%20Pedido%20Sospechosa)%20(3%3A3).png)
 
 - **Cancelación Pedido por No Confirmación del Comprador en 24 hrs.**
   
-![Cancelación Pedido por No Confirmación del Comprador en 24 hrs.](screenshots/hitl-correo-aprobar-rechazar.png)
+![Cancelación Pedido por No Confirmación del Comprador en 24 hrs.](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/210447d68f8e329022cba3a1e74459bce7dc99de/9.%20Cancelacio%CC%81n%20Pedido%20por%20No%20Confirmacio%CC%81n%20del%20Comprador%20en%2024%20hrs.png)
 
 - **Dashboard de Control**
   
-![Dashboard de Control](screenshots/hitl-correo-aprobar-rechazar.png)
+![Dashboard de Control](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/210447d68f8e329022cba3a1e74459bce7dc99de/10.%20Dashboard%20de%20Control.png)
   
 
 ## Stack
