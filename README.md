@@ -16,13 +16,13 @@ Entrega Final — curso AI Automation, Comisión #96930.
 
 ## Stack
 
-![n8n](https://img.shields.io/badge/n8n-EA4B71?style=for-the-badge&logo=n8n&logoColor=white)
-![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)
-![OpenAI](https://img.shields.io/badge/OpenAI%20(gpt--4o--mini)-412991?style=for-the-badge&logo=openai&logoColor=white)
-![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)
-![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
-![Gmail](https://img.shields.io/badge/Gmail-EA4335?style=for-the-badge&logo=gmail&logoColor=white)
-![Google Address Validation API](https://img.shields.io/badge/Google%20Address%20Validation%20API-4285F4?style=for-the-badge&logo=google&logoColor=white)
+![n8n](https://img.shields.io/badge/%20-EA4B71?style=for-the-badge&logo=n8n&logoColor=white)
+![Notion](https://img.shields.io/badge/%20-000000?style=for-the-badge&logo=notion&logoColor=white)
+![OpenAI](https://img.shields.io/badge/%20-412991?style=for-the-badge&logo=openai&logoColor=white)
+![Telegram](https://img.shields.io/badge/%20-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)
+![Slack](https://img.shields.io/badge/%20-4A154B?style=for-the-badge&logo=slack&logoColor=white)
+![Gmail](https://img.shields.io/badge/%20-EA4335?style=for-the-badge&logo=gmail&logoColor=white)
+![Google](https://img.shields.io/badge/%20-4285F4?style=for-the-badge&logo=google&logoColor=white)
 
 ## Evidencia del flujo en funcionamiento
 
