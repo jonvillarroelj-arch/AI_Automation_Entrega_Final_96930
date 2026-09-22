@@ -16,17 +16,13 @@ Entrega Final — curso AI Automation, Comisión #96930.
 
 ## Stack
 
-<table>
-<tr>
-<td align="center" style="background-color:#EA4B71; padding:14px;"><img src="https://cdn.simpleicons.org/n8n/white" width="32" alt="n8n"/></td>
-<td align="center" style="background-color:#000000; padding:14px;"><img src="https://cdn.simpleicons.org/notion/white" width="32" alt="Notion"/></td>
-<td align="center" style="background-color:#412991; padding:14px;"><img src="https://cdn.simpleicons.org/openai/white" width="32" alt="OpenAI"/></td>
-<td align="center" style="background-color:#26A5E4; padding:14px;"><img src="https://cdn.simpleicons.org/telegram/white" width="32" alt="Telegram"/></td>
-<td align="center" style="background-color:#4A154B; padding:14px;"><img src="https://cdn.simpleicons.org/slack/white" width="32" alt="Slack"/></td>
-<td align="center" style="background-color:#EA4335; padding:14px;"><img src="https://cdn.simpleicons.org/gmail/white" width="32" alt="Gmail"/></td>
-<td align="center" style="background-color:#4285F4; padding:14px;"><img src="https://cdn.simpleicons.org/google/white" width="32" alt="Google"/></td>
-</tr>
-</table>
+![n8n](https://img.shields.io/badge/n8n-EA4B71?style=for-the-badge&logo=n8n&logoColor=white)
+![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)
+![OpenAI](https://img.shields.io/badge/OpenAI%20(gpt--4o--mini)-412991?style=for-the-badge&logo=openai&logoColor=white)
+![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)
+![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
+![Gmail](https://img.shields.io/badge/Gmail-EA4335?style=for-the-badge&logo=gmail&logoColor=white)
+![Google Address Validation API](https://img.shields.io/badge/Google%20Address%20Validation%20API-4285F4?style=for-the-badge&logo=google&logoColor=white)
 
 ## Evidencia del flujo en funcionamiento
 
