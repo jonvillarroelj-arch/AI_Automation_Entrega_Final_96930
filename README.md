@@ -16,14 +16,46 @@ Entrega Final — curso AI Automation, Comisión #96930.
 
 ## Evidencia del flujo en funcionamiento
 
-- **Canvas General** 
+- **Canvas General**
+
 ![Canvas General](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/728457139bf66b38cb8f1045ee3afd62eba55fb6/1.%20Canvas%20General.png)
-![Sección 1 - Verificación y Riesgo](screenshots/seccion1-verificacion-riesgo.png)
-![Ejecución camino feliz](screenshots/execution-camino-feliz.png)
-![Ejecución camino infeliz](screenshots/execution-camino-infeliz.png)
-![Mensaje real en Telegram](screenshots/telegram-mensaje-cliente.png)
-![Correo HITL con botones Aprobar/Rechazar](screenshots/hitl-correo-aprobar-rechazar.png)
-```
+
+- **Confirmación Pedido Camino Feliz (1/2):**
+
+![Confirmación Pedido Camino Feliz (1/2)]([https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/2.%20Confirmacio%CC%81n%20Pedido%20Camino%20Feliz%20(1%3A2).png))
+
+- **Confirmación Pedido Camino Feliz (2/2):**
+
+![Confirmación Pedido Camino Feliz (2/2)]([https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/3.%20Confirmacio%CC%81n%20Pedido%20Camino%20Feliz%20(2%3A2).png))
+
+- **Confirmación Pedido con Dirección Modificada Validada (1/2):**
+
+![Confirmación Pedido con Dirección Modificada Validada (1/2)]([https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/4.%20Confirmacio%CC%81n%20Pedido%20con%20Direccio%CC%81n%20Modificada%20Validada%20(1%3A2).png))
+
+- **Confirmación Pedido con Dirección Modificada Validada (2/2):**
+
+![onfirmación Pedido con Dirección Modificada Validada (2/2)]([https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/5.%20Confirmacio%CC%81n%20Pedido%20con%20Direccio%CC%81n%20Modificada%20Validada%20(2%3A2).png))
+
+- **Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (1/3)**
+
+![Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (1/3)](screenshots/hitl-correo-aprobar-rechazar.png)
+
+- **Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (2/3)**
+
+![Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (2/3)](screenshots/hitl-correo-aprobar-rechazar.png)
+
+- **Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (3/3)**
+  
+![Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (3/3)](screenshots/hitl-correo-aprobar-rechazar.png)
+
+- **Cancelación Pedido por No Confirmación del Comprador en 24 hrs.**
+  
+![Cancelación Pedido por No Confirmación del Comprador en 24 hrs.](screenshots/hitl-correo-aprobar-rechazar.png)
+
+- **Dashboard de Control**
+  
+![Dashboard de Control](screenshots/hitl-correo-aprobar-rechazar.png)
+  
 
 ## Stack
 
