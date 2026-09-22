@@ -22,19 +22,19 @@ Entrega Final — curso AI Automation, Comisión #96930.
 
 - **Confirmación Pedido Camino Feliz (1/2):**
 
-![Confirmación Pedido Camino Feliz (1/2)]([https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/2.%20Confirmacio%CC%81n%20Pedido%20Camino%20Feliz%20(1%3A2).png))
+![Confirmación Pedido Camino Feliz (1/2)](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/2.%20Confirmacio%CC%81n%20Pedido%20Camino%20Feliz%20(1%3A2).png)
 
 - **Confirmación Pedido Camino Feliz (2/2):**
 
-![Confirmación Pedido Camino Feliz (2/2)]([https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/3.%20Confirmacio%CC%81n%20Pedido%20Camino%20Feliz%20(2%3A2).png))
+![Confirmación Pedido Camino Feliz (2/2)](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/3.%20Confirmacio%CC%81n%20Pedido%20Camino%20Feliz%20(2%3A2).png)
 
 - **Confirmación Pedido con Dirección Modificada Validada (1/2):**
 
-![Confirmación Pedido con Dirección Modificada Validada (1/2)]([https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/4.%20Confirmacio%CC%81n%20Pedido%20con%20Direccio%CC%81n%20Modificada%20Validada%20(1%3A2).png))
+![Confirmación Pedido con Dirección Modificada Validada (1/2)](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/4.%20Confirmacio%CC%81n%20Pedido%20con%20Direccio%CC%81n%20Modificada%20Validada%20(1%3A2).png)
 
 - **Confirmación Pedido con Dirección Modificada Validada (2/2):**
 
-![onfirmación Pedido con Dirección Modificada Validada (2/2)]([https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/5.%20Confirmacio%CC%81n%20Pedido%20con%20Direccio%CC%81n%20Modificada%20Validada%20(2%3A2).png))
+![onfirmación Pedido con Dirección Modificada Validada (2/2)](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/cd00edd96a6b26da137278af7ca308a1eecb145d/5.%20Confirmacio%CC%81n%20Pedido%20con%20Direccio%CC%81n%20Modificada%20Validada%20(2%3A2).png)
 
 - **Confirmación Pedido con HITL (Dirección Pedido Sospechosa) (1/3)**
 
