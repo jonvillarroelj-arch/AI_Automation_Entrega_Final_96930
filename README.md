@@ -13,14 +13,10 @@ Entrega Final — curso AI Automation, Comisión #96930.
 
 - [`Diagrama_Arquitectura.pdf`](Diagrama_Arquitectura.pdf) — informe completo (9 páginas): contexto, mapa de arquitectura, estructuras de datos, optimización de costos, seguridad y resiliencia, dashboard de control.
 - [`workflow.json`](workflow.json) — lógica completa del flujo, exportada de n8n (109 nodos, 174 conexiones).
-- [`screenshots/`]() — evidencia del flujo funcionando en la práctica.
 
 ## Evidencia del flujo en funcionamiento
 
-*(agregar aquí las imágenes a medida que se suban a `screenshots/`, por ejemplo:)*
-
-```
-![Vista general del canvas](screenshots/canvas-general.png)
+![Canvas General](https://github.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/blob/728457139bf66b38cb8f1045ee3afd62eba55fb6/1.%20Canvas%20General.png)
 ![Sección 1 - Verificación y Riesgo](screenshots/seccion1-verificacion-riesgo.png)
 ![Ejecución camino feliz](screenshots/execution-camino-feliz.png)
 ![Ejecución camino infeliz](screenshots/execution-camino-infeliz.png)
