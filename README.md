@@ -18,9 +18,9 @@ Entrega Final — curso AI Automation, Comisión #96930.
 
 ![n8n](https://img.shields.io/badge/%20-EA4B71?style=for-the-badge&logo=n8n&logoColor=white)
 ![Notion](https://img.shields.io/badge/%20-000000?style=for-the-badge&logo=notion&logoColor=white)
-![OpenAI](https://img.shields.io/badge/%20-412991?style=for-the-badge&logo=openai&logoColor=white)
+![OpenAI](https://img.shields.io/badge/%20-white?style=for-the-badge&logo=openai&logoColor=412991)
 ![Telegram](https://img.shields.io/badge/%20-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)
-![Slack](https://img.shields.io/badge/%20-4A154B?style=for-the-badge&logo=slack&logoColor=white)
+![Slack](https://img.shields.io/badge/%20-white?style=for-the-badge&logo=slack)
 ![Gmail](https://img.shields.io/badge/%20-EA4335?style=for-the-badge&logo=gmail&logoColor=white)
 ![Google](https://img.shields.io/badge/%20-4285F4?style=for-the-badge&logo=google&logoColor=white)
 
