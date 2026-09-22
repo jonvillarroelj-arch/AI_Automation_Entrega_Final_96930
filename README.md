@@ -4,17 +4,24 @@ Sistema de verificación de pedidos contra entrega para un negocio de e-commerce
 
 Entrega Final — curso AI Automation, Comisión #96930.
 
+
+
 ## Enlaces del proyecto
+
 
 - **Base de Datos en modo lectura (Notion):** https://app.notion.com/p/Verificaci-n-Automatizada-de-Pedidos-Contra-Entrega-3d8f420e9c5f80f0b65eda540c7c2da5?source=copy_link
 - **Dashboard de Control (panel público):** https://app.notion.com/p/Dashboard-de-Control-Resumen-3ddf420e9c5f80ceb114d69ed1b16a79
 
+
 ## Archivos
+
 
 - [`Diagrama_Arquitectura.pdf`](Diagrama_Arquitectura.pdf): Informe completo (9 páginas): contexto, mapa de arquitectura, estructuras de datos, optimización de costos, seguridad y resiliencia, dashboard de control.
 - [`workflow.json`](workflow.json): Lógica completa del flujo, exportada de n8n (111 nodos, 176 conexiones).
 
+
 ## Stack
+
 
 ![n8n](https://img.shields.io/badge/n8n-EA4B71?style=for-the-badge&logo=n8n&logoColor=white)
 ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)
@@ -24,7 +31,10 @@ Entrega Final — curso AI Automation, Comisión #96930.
 ![Gmail](https://img.shields.io/badge/Gmail-EA4335?style=for-the-badge&logo=gmail&logoColor=white)
 ![Google Address Validation API](https://img.shields.io/badge/Google%20Address%20Validation%20API-4285F4?style=for-the-badge&logo=google&logoColor=white)
 
+
+
 ## Evidencia del flujo en funcionamiento
+
 
 - **Canvas General:** Canvas completo de n8n con los 111 nodos del workflow, organizados en las 8 secciones del proceso (Verificación y Motor de Riesgo, Cascada de Confirmación, Rama Telegram, Cascada de Dirección Corregida, Registro y Mensajes Finales, Revisión Humana, Manejo de Errores y Reporte Diario). Confirma que el sistema documentado en el PDF existe realmente en n8n, con la misma cantidad de nodos y conexiones.
 
