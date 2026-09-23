@@ -53,9 +53,9 @@ Un pedido con dirección válida y comprador de buen historial recorre el flujo 
 ![Confirmación Pedido Camino Feliz (1/2)](https://raw.githubusercontent.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/cd00edd96a6b26da137278af7ca308a1eecb145d/2.%20Confirmacio%CC%81n%20Pedido%20Camino%20Feliz%20(1%3A2).png)
 
 
-- **Confirmación Pedido Camino Feliz (2/2: Trigger: Botón Presionado Cliente):**
+- **Confirmación Pedido Camino Feliz (2/2: Trigger: Botón Presionado por Cliente):**
 
-Botón Presionado Comprador):** Un pedido con dirección válida y comprador de buen historial recorre el flujo completo sin intervención manual: el cliente recibe el mensaje inicial por Telegram, presiona "CONFIRMAR PEDIDO", y el sistema responde con el mensaje real de despacho una vez validada la dirección. La fila en Notion (Centro de Comando) queda con Estado "Confirmó" y Dirección Validada "TRUE". La captura muestra la ejecución correspondiente en n8n, de punta a punta y sin errores.
+Un pedido con dirección válida y comprador de buen historial recorre el flujo completo sin intervención manual: el cliente recibe el mensaje inicial por Telegram, presiona "CONFIRMAR PEDIDO", y el sistema responde con el mensaje real de despacho una vez validada la dirección. La fila en Notion (Centro de Comando) queda con Estado "Confirmó" y Dirección Validada "TRUE". La captura muestra la ejecución correspondiente en n8n, de punta a punta y sin errores.
 
 
 ![Confirmación Pedido Camino Feliz (2/2)](https://raw.githubusercontent.com/jonvillarroelj-arch/AI_Automation_Entrega_Final_96930/cd00edd96a6b26da137278af7ca308a1eecb145d/3.%20Confirmacio%CC%81n%20Pedido%20Camino%20Feliz%20(2%3A2).png)
